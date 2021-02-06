@@ -1,14 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'Calls.dart' as calls;
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
 
-void main() {
-  runApp(MyApp());
-}
+class HomeScreen extends StatelessWidget {
+  User user;
 
-class MyApp extends StatelessWidget {
+  HomeScreen(User user) {
+    this.user = user;
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
