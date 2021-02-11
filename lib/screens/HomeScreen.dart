@@ -1,26 +1,30 @@
 import 'package:LangChat/backend/authentication.dart';
+import 'package:LangChat/backend/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/rendering.dart';
 import 'Calls.dart' as calls;
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
 
-class HomeScreen extends StatelessWidget {
-  User user;
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
 
-  HomeScreen(User user) {
-    this.user = user;
-  }
-
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: new Color(0xff622F74),
+        primaryColor: Colors.indigo[400],
       ),
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
+            backgroundColor: Colors.indigo[100],
             appBar: AppBar(
               leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
               title: Text('LangChat'),
@@ -49,9 +53,9 @@ class HomeScreen extends StatelessWidget {
             ),
             body: TabBarView(
               children: [
-                new chats.Chats(),
-                new calls.Calls(),
-                new contacts.Contacts(),
+                chats.Chats(),
+                calls.Calls(),
+                contacts.Contacts(),
               ],
             )),
       ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Calls extends StatelessWidget {
+class Calls extends StatefulWidget {
+  @override
+  _CallsState createState() => _CallsState();
+}
+
+class _CallsState extends State<Calls> {
   List<String> getListElements() {
     var items = List<String>.generate(50, (index) => "Name $index");
     return items;
