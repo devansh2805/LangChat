@@ -1,10 +1,16 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+//import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+import 'dart:io';
 
-void main() {
-  runApp(MyApp());
-}
+// void main() {
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +23,11 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// File image;
+// Future getImage() async {
+//   Final image = await ImagePicker.pickImage(ImageSource.gallery);
+
+// }
 
 class Language {
   List<String> getLanguage() {
@@ -69,6 +80,7 @@ class _HomePageState extends State<HomePage> {
             height: 75.0,
           ),
           DropdownButton<String>(
+            // <------------------------ Here
             items: [
               DropdownMenuItem<String>(
                 value: "Language 1",
