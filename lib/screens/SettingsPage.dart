@@ -1,127 +1,120 @@
+import 'package:LangChat/backend/database.dart';
+import 'package:LangChat/screens/HomeScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(MyApp());
+class SettingsPage extends StatefulWidget {
+  _SettingsPageState createState() => _SettingsPageState();
 }
 
-class MyApp extends StatelessWidget {
+class _SettingsPageState extends State<SettingsPage> {
+  final TextEditingController _nameController = TextEditingController();
+  String name = '';
+  String prefLang = 'English';
+  bool validText = false;
+
+  Map<String, String> langCodes = {'English': 'en', 'Spanish': 'es'};
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LangChat',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomePage(),
-    );
-  }
-}
-
-class Language {
-  List<String> getLanguage() {
-    var items = List<String>.generate(50, (index) => "Language $index");
-    return items;
-  }
-}
-
-class HomePage extends StatefulWidget {
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  String value = '';
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "LangChat",
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 40),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 90.0,
+            ),
+            Center(
+              child: Text("Enter your details",
+                  style: GoogleFonts.roboto(color: Colors.grey, fontSize: 30)),
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
+            TextField(
+              controller: _nameController,
+              onChanged: (value) {
+                if (value == '') {
+                  validText = false;
+                } else {
+                  validText = true;
+                }
+                setState(() {});
+                name = value;
+              },
+              decoration: InputDecoration(
+                icon: Icon(Icons.person),
+                hintText: 'Your name',
+                labelText: 'Enter your name',
+                errorText: !validText ? 'Value Can\'t Be Empty' : null,
+              ),
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
+            Text("Choose preferred language",
+                style: GoogleFonts.roboto(color: Colors.grey, fontSize: 16)),
+            DropdownButton<String>(
+              value: prefLang,
+              icon: Icon(Icons.keyboard_arrow_down),
+              iconSize: 24,
+              style: GoogleFonts.roboto(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+              underline: Container(
+                height: 2,
+                color: Colors.grey,
+              ),
+              onChanged: (String newValue) {
+                setState(() {
+                  prefLang = newValue;
+                });
+              },
+              items: <String>['English', 'Spanish', 'German', 'French']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                    value: value,
+                    child: Container(
+                      child: Text(
+                        value,
+                        style: GoogleFonts.roboto(),
+                      ),
+                    ));
+              }).toList(),
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            RaisedButton(
+              color: Colors.indigo[400],
+              onPressed: () async {
+                if (_nameController.text == '') {
+                  setState(() {
+                    validText = false;
+                  });
+                } else {
+                  await Database().storeUserDetails(
+                      FirebaseAuth.instance.currentUser.uid,
+                      name,
+                      FirebaseAuth.instance.currentUser.phoneNumber,
+                      langCodes[prefLang]);
+                  Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return HomeScreen(FirebaseAuth.instance.currentUser);
+                    },
+                  ));
+                }
+              },
+              child: Text(
+                'Next',
+                style: GoogleFonts.roboto(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ],
         ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            width: 200.0,
-            height: 50.0,
-          ),
-          Icon(
-            Icons.account_circle,
-            size: 200,
-            color: Colors.blue,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              icon: Icon(Icons.person),
-              hintText: 'Your name',
-              labelText: 'Enter your name here',
-            ),
-            // onSaved: (String value) {
-            //   // This optional block of code can be used to run
-            //   // code when the user saves the form.
-            // },
-            // validator: (String value) {
-            //   //return value.contains('@') ? 'Do not use the @ char.' : null;
-            // },
-          ),
-          SizedBox(
-            width: 200.0,
-            height: 75.0,
-          ),
-          DropdownButton<String>(
-            items: [
-              DropdownMenuItem<String>(
-                value: "Language 1",
-                child: Center(
-                  child: Text("Language 1"),
-                ),
-              ),
-              DropdownMenuItem<String>(
-                value: "Language 2",
-                child: Center(
-                  child: Text("Language 2"),
-                ),
-              ),
-              DropdownMenuItem<String>(
-                value: "Language 3",
-                child: Center(
-                  child: Text("Language 3"),
-                ),
-              ),
-              DropdownMenuItem<String>(
-                value: "Language 4",
-                child: Center(
-                  child: Text("Language 4"),
-                ),
-              ),
-            ],
-            onChanged: (_value) {
-              setState(() {
-                value = _value;
-              });
-            },
-            hint: Text("Select your preferred language"),
-          ),
-          Text(
-            "$value ",
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          SizedBox(
-            width: 200.0,
-            height: 100.0,
-          ),
-          RaisedButton(
-            color: Colors.blue,
-            onPressed: () {},
-            child: Text('Update'),
-          ),
-          SizedBox(
-            width: 200.0,
-            height: 50.0,
-          ),
-        ],
       ),
     );
   }

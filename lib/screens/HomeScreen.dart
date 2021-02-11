@@ -1,3 +1,4 @@
+import 'package:LangChat/backend/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -23,6 +24,15 @@ class HomeScreen extends StatelessWidget {
             appBar: AppBar(
               leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
               title: Text('LangChat'),
+              actions: [
+                IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.logout),
+                    onPressed: () async {
+                      await Auth().signOut();
+                      Navigator.pop(context);
+                    })
+              ],
               bottom: TabBar(
                 tabs: [
                   Tab(

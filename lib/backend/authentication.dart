@@ -1,4 +1,4 @@
-import 'package:LangChat/screens/HomeScreen.dart';
+import 'package:LangChat/screens/SettingsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class Auth {
           User user = userCredential.user;
           if (user != null) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeScreen(user)));
+                MaterialPageRoute(builder: (context) => SettingsPage()));
           } else {
             print("Error");
           }
@@ -53,7 +53,7 @@ class Auth {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomeScreen(user)));
+                                  builder: (context) => SettingsPage()));
                         } else {
                           print("Error");
                         }

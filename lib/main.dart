@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: FutureBuilder(
           future: Auth().getCurrentUser(),
           builder: (context, snapshot) {
