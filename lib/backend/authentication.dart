@@ -1,6 +1,6 @@
+import 'package:LangChat/screens/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../HomeScreen.dart';
 
 class Auth {
   Future<void> loginUser(String phoneNumber, BuildContext context) async {
