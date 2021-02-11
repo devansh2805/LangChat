@@ -1,9 +1,8 @@
-import 'dart:async';
-import 'package:LangChat/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'backend/authentication.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _codeController = TextEditingController();
+
   String countryCode;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
               ),
               onPressed: () {
                 final phoneNumber = countryCode + _phoneController.text.trim();
-                loginUser(phoneNumber, context);
+                Auth().loginUser(phoneNumber, context);
               },
               child: Text('Login'),
               textColor: Colors.white,
@@ -61,70 +60,5 @@ class LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  Future<void> loginUser(String phoneNumber, BuildContext context) async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    _auth.verifyPhoneNumber(
-        phoneNumber: phoneNumber,
-        timeout: Duration(seconds: 60),
-        verificationCompleted: (AuthCredential credential) async {
-          Navigator.of(context).pop();
-          UserCredential userCredential =
-              await _auth.signInWithCredential(credential);
-          User user = userCredential.user;
-          if (user != null) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeScreen(user)));
-          } else {
-            print("Error");
-          }
-        },
-        verificationFailed: (FirebaseAuthException authException) {
-          print(authException);
-        },
-        codeSent: (String verificationId, [int forceResendingToken]) {
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text("Enter Code"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      TextField(
-                        controller: _codeController,
-                      ),
-                    ],
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () async {
-                        final code = _codeController.text.trim();
-                        AuthCredential credential =
-                            PhoneAuthProvider.credential(
-                                verificationId: verificationId, smsCode: code);
-                        UserCredential userCredential =
-                            await _auth.signInWithCredential(credential);
-                        User user = userCredential.user;
-                        if (user != null) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(user)));
-                        } else {
-                          print("Error");
-                        }
-                      },
-                      child: Text("Confirm"),
-                      textColor: Colors.white,
-                      color: Colors.blue,
-                    )
-                  ],
-                );
-              });
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {});
   }
 }
