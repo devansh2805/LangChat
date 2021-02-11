@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               actions: [
                 IconButton(
                     color: Colors.white,
-                    icon: Icon(Icons.logout),
+                    icon: Icon(Icons.lock_open),
                     onPressed: () async {
                       await Auth().signOut();
                       Navigator.pop(context);
