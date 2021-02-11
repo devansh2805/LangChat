@@ -15,7 +15,7 @@ class Auth {
               await _auth.signInWithCredential(credential);
           User user = userCredential.user;
           if (user != null) {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => SettingsPage()));
           } else {
             print("Error");
