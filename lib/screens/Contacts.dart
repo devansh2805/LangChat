@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Contacts extends StatelessWidget {
+class Contacts extends StatefulWidget {
+  @override
+  _ContactsState createState() => _ContactsState();
+}
+
+class _ContactsState extends State<Contacts> {
   List<String> getListElements() {
     var items = List<String>.generate(50, (index) => "Name $index");
     return items;

@@ -17,15 +17,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-          future: Auth().getCurrentUser(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return HomeScreen(snapshot.data);
-            } else {
-              return LoginPage();
-            }
-          }),
+      home: HomeScreen(),
+      // home: FutureBuilder(
+      //     future: Auth().getCurrentUser(),
+      //     builder: (context, snapshot) {
+      //       if (snapshot.hasData) {
+      //         return HomeScreen();
+      //       } else {
+      //         return LoginPage();
+      //       }
+      //     }),
       theme: new ThemeData(primarySwatch: Colors.grey),
     );
   }

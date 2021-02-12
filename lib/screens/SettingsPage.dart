@@ -13,6 +13,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String name = '';
   String prefLang = 'English';
   bool validText = false;
+  bool textFieldTouched = false;
 
   Map<String, String> langCodes = {'English': 'en', 'Spanish': 'es'};
 
@@ -36,6 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
             TextField(
               controller: _nameController,
               onChanged: (value) {
+                textFieldTouched = true;
                 if (value == '') {
                   validText = false;
                 } else {
@@ -48,7 +50,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icon(Icons.person),
                 hintText: 'Your name',
                 labelText: 'Enter your name',
-                errorText: !validText ? 'Value Can\'t Be Empty' : null,
+                errorText: (!validText && textFieldTouched)
+                    ? 'Value Can\'t Be Empty'
+                    : null,
               ),
             ),
             SizedBox(
@@ -73,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   prefLang = newValue;
                 });
               },
-              items: <String>['English', 'Spanish', 'German', 'French']
+              items: <String>['English', 'Spanish']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                     value: value,
@@ -101,9 +105,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       name,
                       FirebaseAuth.instance.currentUser.phoneNumber,
                       langCodes[prefLang]);
-                  Navigator.of(context).push(new MaterialPageRoute(
+                  Navigator.of(context).pushReplacement(new MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return HomeScreen(FirebaseAuth.instance.currentUser);
+                      return HomeScreen();
                     },
                   ));
                 }
