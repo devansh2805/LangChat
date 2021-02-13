@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
 
+// ignore: must_be_immutable
 class ChatScreen extends StatefulWidget {
   Map userDetails;
   ChatScreen(this.userDetails);

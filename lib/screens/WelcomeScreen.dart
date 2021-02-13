@@ -1,6 +1,7 @@
 import 'package:LangChat/backend/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'Calls.dart' as calls;
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
@@ -10,7 +11,28 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  Future<void> _handleTabSelection() async {
+    if (_tabController.indexIsChanging) {
+      switch (_tabController.index) {
+        case 2:
+          if (!await Permission.contacts.isGranted) {
+            Permission.contacts.request();
+          }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,6 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     })
               ],
               bottom: TabBar(
+                controller: _tabController,
                 tabs: [
                   Tab(
                     child: Text('Chats',
@@ -53,6 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
             ),
             body: TabBarView(
+              controller: _tabController,
               children: [
                 chats.Chats(),
                 calls.Calls(),
