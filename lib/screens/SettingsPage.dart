@@ -15,7 +15,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool validText = false;
   bool textFieldTouched = false;
 
-  Map<String, String> langCodes = {'English': 'en', 'Spanish': 'es'};
+  Map<String, String> langCodes = {
+    'English': 'en',
+    'Spanish': 'es',
+    'Gujarati': 'gu',
+    'German': 'de',
+    'Hindi': 'hi',
+    'French': 'fr'
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +84,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   prefLang = newValue;
                 });
               },
-              items: <String>['English', 'Spanish']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: <String>[
+                'English',
+                'French',
+                'Gujarati',
+                'German',
+                'Hindi',
+                'Spanish'
+              ].map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                     value: value,
                     child: Container(

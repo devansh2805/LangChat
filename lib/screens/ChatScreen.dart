@@ -117,8 +117,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                           ? Colors.indigo[300]
                                           : Color(0xff9b95f5),
                                       borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10))),
+                                          bottomLeft: ds['senderUid'] ==
+                                                  widget.senderDetails['uid']
+                                              ? Radius.circular(10)
+                                              : Radius.circular(0),
+                                          bottomRight: ds['senderUid'] ==
+                                                  widget.senderDetails['uid']
+                                              ? Radius.circular(0)
+                                              : Radius.circular(10))),
                                   padding: EdgeInsets.all(5),
                                   width:
                                       MediaQuery.of(context).size.width * 0.6,

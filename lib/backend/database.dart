@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
-  Future<DocumentReference> sendMessage(String origMessage, String transMessage,
-      DateTime timestamp, String senderUid, String chatRoomId) async {
+  sendMessage(String origMessage, String transMessage, DateTime timestamp,
+      String senderUid, String chatRoomId) async {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .doc(chatRoomId)
@@ -12,6 +12,16 @@ class Database {
       'transMessage': transMessage,
       'timestamp': timestamp,
       'senderUid': senderUid,
+    }).then((value) async {
+      FirebaseFirestore.instance
+          .collection('ChatRooms')
+          .doc(chatRoomId)
+          .update({
+        'lastMsgOrig': origMessage,
+        'lastMsgTrans': transMessage,
+        'timestamp': timestamp,
+        'sentBy': senderUid
+      });
     });
   }
 
@@ -30,6 +40,13 @@ class Database {
         .collection('users')
         .where('uid', isNotEqualTo: uid)
         .snapshots();
+  }
+
+  Future<DocumentSnapshot> checkIfChatRoomExist(String chatRoomId) async {
+    return FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .get();
   }
 
   Future<Stream<QuerySnapshot>> fetchChatsFromDatabase(

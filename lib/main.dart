@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:LangChat/screens/ChatScreen.dart';
 import 'package:LangChat/screens/HomeScreen.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:LangChat/backend/authentication.dart';
