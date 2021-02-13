@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:LangChat/screens/ChatScreen.dart';
 import 'package:LangChat/screens/HomeScreen.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:LangChat/backend/authentication.dart';
@@ -17,16 +18,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-      // home: FutureBuilder(
-      //     future: Auth().getCurrentUser(),
-      //     builder: (context, snapshot) {
-      //       if (snapshot.hasData) {
-      //         return HomeScreen();
-      //       } else {
-      //         return LoginPage();
-      //       }
-      //     }),
+      home: FutureBuilder(
+          future: Auth().getCurrentUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return HomeScreen();
+            } else {
+              return LoginPage();
+            }
+          }),
       theme: new ThemeData(primarySwatch: Colors.grey),
     );
   }

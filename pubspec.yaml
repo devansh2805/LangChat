@@ -31,7 +31,8 @@ dependencies:
   firebase_auth: ^0.20.0+1
   cloud_firestore: "^0.16.0"
   intl_phone_field: ^1.4.2
-  image_picker: ^0.6.7+22
+  # image_picker: ^0.6.7+22
+  translator: ^0.1.5
 
 dev_dependencies:
   flutter_test:

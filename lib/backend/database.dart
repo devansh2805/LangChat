@@ -1,6 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
+  Future<DocumentReference> sendMessage(String origMessage, String transMessage,
+      DateTime timestamp, String senderUid, String chatRoomId) async {
+    return FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .collection('chats')
+        .add({
+      'origMessage': origMessage,
+      'transMessage': transMessage,
+      'timestamp': timestamp,
+      'senderUid': senderUid,
+    });
+  }
+
   Future<DocumentSnapshot> getUserDetails(String uid) {
     return FirebaseFirestore.instance.collection('users').doc(uid).get();
   }
@@ -24,6 +38,7 @@ class Database {
         .collection('ChatRooms')
         .doc(chatRoomId)
         .collection('chats')
+        .orderBy('timestamp')
         .snapshots();
   }
 }

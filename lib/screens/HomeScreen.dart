@@ -1,10 +1,5 @@
 import 'package:LangChat/backend/authentication.dart';
-import 'package:LangChat/backend/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/rendering.dart';
 import 'Calls.dart' as calls;
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
