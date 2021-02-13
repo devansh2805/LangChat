@@ -1,6 +1,9 @@
 import 'package:LangChat/screens/SettingsPage.dart';
+import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'database.dart';
 
 class Auth {
   Future<void> loginUser(String phoneNumber, BuildContext context) async {
@@ -14,9 +17,15 @@ class Auth {
           UserCredential userCredential =
               await _auth.signInWithCredential(credential);
           User user = userCredential.user;
+
           if (user != null) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => SettingsPage()));
+            if (Database().userAlreadyRegistered(user.phoneNumber)) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
+            } else {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()));
+            }
           } else {
             print("Error");
           }
@@ -50,10 +59,18 @@ class Auth {
                             await _auth.signInWithCredential(credential);
                         User user = userCredential.user;
                         if (user != null) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SettingsPage()));
+                          if (Database()
+                              .userAlreadyRegistered(user.phoneNumber)) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WelcomeScreen()));
+                          } else {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SettingsPage()));
+                          }
                         } else {
                           print("Error");
                         }

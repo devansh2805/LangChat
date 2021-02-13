@@ -1,5 +1,5 @@
 import 'package:LangChat/backend/database.dart';
-import 'package:LangChat/screens/HomeScreen.dart';
+import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -120,7 +120,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       langCodes[prefLang]);
                   Navigator.of(context).pushReplacement(new MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return HomeScreen();
+                      return WelcomeScreen();
                     },
                   ));
                 }

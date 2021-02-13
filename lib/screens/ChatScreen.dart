@@ -5,9 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
 
 class ChatScreen extends StatefulWidget {
-  Map senderDetails;
-  Map receiverDetails;
-  ChatScreen(this.senderDetails, this.receiverDetails);
+  Map userDetails;
+  ChatScreen(this.userDetails);
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -15,8 +14,19 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   String chatRoomId;
   Stream chats;
+  DocumentSnapshot receiverDetails;
   final TextEditingController _msgController = TextEditingController();
   final translator = GoogleTranslator();
+
+  String getInitials(String name) {
+    String intitials = '';
+    name.split(' ').forEach((word) {
+      if (word.length > 0) {
+        intitials += word[0].toUpperCase();
+      }
+    });
+    return intitials;
+  }
 
   getChatRoomId(String u1, String u2) {
     if (u1.substring(0, 1).codeUnitAt(0) > u2.substring(0, 1).codeUnitAt(0)) {
@@ -26,15 +36,17 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  fetchChats() async {
+  fetchData() async {
     chatRoomId = getChatRoomId(
-        widget.senderDetails['uid'], widget.receiverDetails['uid']);
-    chats = await Database().fetchChatsFromDatabase(chatRoomId);
+        widget.userDetails['uid'], widget.userDetails['receiverUid']);
+    receiverDetails =
+        await Database().getUserDetails(widget.userDetails['receiverUid']);
+    chats = await Database().fetchMessagesFromDatabase(chatRoomId);
   }
 
   @override
   void initState() {
-    fetchChats();
+    fetchData();
     setState(() {});
     super.initState();
   }
@@ -49,11 +61,11 @@ class _ChatScreenState extends State<ChatScreen> {
             child: CircleAvatar(
               backgroundColor: Colors.black,
               maxRadius: 2.0,
-              child: Text(widget.receiverDetails['initials']),
+              child: Text(getInitials(receiverDetails['name'])),
             ),
           ),
           title: Text(
-            widget.receiverDetails['name'],
+            receiverDetails['name'],
             style: GoogleFonts.roboto(
                 color: Colors.black, fontWeight: FontWeight.bold),
           ),
@@ -86,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             // message area
                             margin: EdgeInsets.all(10),
                             alignment:
-                                ds['senderUid'] == widget.senderDetails['uid']
+                                ds['senderUid'] == widget.userDetails['uid']
                                     ? Alignment.centerRight
                                     : Alignment.centerLeft,
                             width: MediaQuery.of(context).size.width - 10,
@@ -94,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               Container(
                                 decoration: BoxDecoration(
                                     color: ds['senderUid'] ==
-                                            widget.senderDetails['uid']
+                                            widget.userDetails['uid']
                                         ? Colors.indigo[400]
                                         : Color(0xff7269ef),
                                     borderRadius: BorderRadius.only(
@@ -103,8 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 padding: EdgeInsets.all(5),
                                 width: MediaQuery.of(context).size.width * 0.6,
                                 child: Text(
-                                    ds['senderUid'] ==
-                                            widget.senderDetails['uid']
+                                    ds['senderUid'] == widget.userDetails['uid']
                                         ? ds['origMessage']
                                         : ds['transMessage'],
                                     style: GoogleFonts.roboto(
@@ -113,16 +124,16 @@ class _ChatScreenState extends State<ChatScreen> {
                               Container(
                                   decoration: BoxDecoration(
                                       color: ds['senderUid'] ==
-                                              widget.senderDetails['uid']
+                                              widget.userDetails['uid']
                                           ? Colors.indigo[300]
                                           : Color(0xff9b95f5),
                                       borderRadius: BorderRadius.only(
                                           bottomLeft: ds['senderUid'] ==
-                                                  widget.senderDetails['uid']
+                                                  widget.userDetails['uid']
                                               ? Radius.circular(10)
                                               : Radius.circular(0),
                                           bottomRight: ds['senderUid'] ==
-                                                  widget.senderDetails['uid']
+                                                  widget.userDetails['uid']
                                               ? Radius.circular(0)
                                               : Radius.circular(10))),
                                   padding: EdgeInsets.all(5),
@@ -130,8 +141,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       MediaQuery.of(context).size.width * 0.6,
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    ds['senderUid'] ==
-                                            widget.senderDetails['uid']
+                                    ds['senderUid'] == widget.userDetails['uid']
                                         ? ds['transMessage']
                                         : ds['origMessage'],
                                     style: GoogleFonts.roboto(
@@ -176,13 +186,13 @@ class _ChatScreenState extends State<ChatScreen> {
                   } else {
                     translator
                         .translate(_msgController.text,
-                            to: widget.receiverDetails['prefLang'])
+                            to: receiverDetails['prefLang'])
                         .then((msg) async {
                       await Database().sendMessage(
                           _msgController.text,
                           msg.toString(),
                           DateTime.now(),
-                          widget.senderDetails['uid'],
+                          widget.userDetails['uid'],
                           chatRoomId);
                       _msgController.text = '';
                       setState(() {});

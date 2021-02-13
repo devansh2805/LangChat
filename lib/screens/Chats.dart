@@ -14,12 +14,20 @@ class Chats extends StatefulWidget {
 class _ChatsState extends State<Chats> {
   bool loading = true;
   DocumentSnapshot userDetails;
+  Stream chatRooms;
 
   void fetchData() async {
     userDetails =
         await Database().getUserDetails(FirebaseAuth.instance.currentUser.uid);
+    chatRooms = Database().getChatRooms(userDetails['uid']);
     loading = false;
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
   }
 
   getChatRoomId(String u1, String u2) {
@@ -41,68 +49,62 @@ class _ChatsState extends State<Chats> {
   }
 
   Widget build(BuildContext context) {
-    return Container();
-    // return !loading
-    //     ? StreamBuilder(
-    //         stream: Database().fetchUsers(userDetails['uid']),
-    //         builder: (context, snapshot) {
-    //           return (snapshot.hasData)
-    //               ? ListView.builder(
-    //                   itemCount: snapshot.data.docs.length,
-    //                   itemBuilder: (context, index) {
-    //                     DocumentSnapshot ds = snapshot.data.docs[index];
-    //                     var chatRoom = Database().checkIfChatRoomExist(
-    //                         getChatRoomId(userDetails['uid'], ds['uid']));
-    //                     if (chatRoom != null) {
-    //                       return Container(
-    //                         decoration: BoxDecoration(
-    //                             color: Colors.white,
-    //                             borderRadius:
-    //                                 BorderRadius.all(Radius.circular(10))),
-    //                         margin: EdgeInsets.all(6),
-    //                         child: ListTile(
-    //                             leading: CircleAvatar(
-    //                                 backgroundColor: Colors.black,
-    //                                 child: Text(getInitials(ds['name']),
-    //                                     style: GoogleFonts.roboto(
-    //                                       fontSize: 15,
-    //                                     ))),
-    //                             title: Text(ds['name']),
-    //                             subtitle: Text('Chat snippet for $index'),
-    //                             trailing: Icon(
-    //                               Icons.check,
-    //                               color: Color.fromRGBO(0, 20, 200, 0.4),
-    //                             ),
-    //                             onTap: () {
-    //                               Navigator.pushReplacement(
-    //                                   context,
-    //                                   MaterialPageRoute(
-    //                                       builder: (context) => ChatScreen({
-    //                                             'uid': userDetails['uid'],
-    //                                             'prefLang':
-    //                                                 userDetails['prefLang']
-    //                                           }, {
-    //                                             'uid': ds['uid'],
-    //                                             'prefLang': ds['prefLang'],
-    //                                             'name': ds['name'],
-    //                                             'initials':
-    //                                                 getInitials(ds['name'])
-    //                                           })));
-    //                             }),
-    //                       );
-    //                     } else {
-    //                       return SizedBox(height: 0);
-    //                     }
-    //                   },
-    //                 )
-    //               : Center(
-    //                   child: CircularProgressIndicator(
-    //                     valueColor:
-    //                         AlwaysStoppedAnimation<Color>(Colors.indigo[400]),
-    //                   ),
-    //                 );
-    //         },
-    //       )
-    //     : Center(child: CircularProgressIndicator());
+    return !loading
+        ? StreamBuilder(
+            stream: chatRooms,
+            builder: (context, snapshot) {
+              return (snapshot.hasData)
+                  ? ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot ds = snapshot.data.docs[index];
+                        String name = userDetails['name'] == ds['users'][0]
+                            ? ds['users'][1]
+                            : ds['users'][0];
+                        String uid = userDetails['uid'] == ds['userIds'][0]
+                            ? ds['userIds'][1]
+                            : ds['userIds'][0];
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          margin: EdgeInsets.all(6),
+                          child: ListTile(
+                              leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  child: Text(getInitials(name),
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 15,
+                                      ))),
+                              title: Text(name),
+                              subtitle: Text(userDetails['uid'] == ds['sentBy']
+                                  ? ds['lastMsgOrig'].substring(0, 7) + '...'
+                                  : ds['lastMsgTrans'].substring(0, 7) + '...'),
+                              trailing: Icon(
+                                Icons.check,
+                                color: Color.fromRGBO(0, 20, 200, 0.4),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen({
+                                              'uid': userDetails['uid'],
+                                              'prefLang':
+                                                  userDetails['prefLang'],
+                                              'receiverUid': uid
+                                            })));
+                              }),
+                        );
+                      })
+                  : Center(
+                      child: Center(
+                        child: Text('You have not chatted with anyone yet'),
+                      ),
+                    );
+            },
+          )
+        : Center(child: CircularProgressIndicator());
   }
 }

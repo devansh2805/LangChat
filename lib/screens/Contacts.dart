@@ -14,12 +14,20 @@ class Contacts extends StatefulWidget {
 class _ContactsState extends State<Contacts> {
   bool loading = true;
   DocumentSnapshot userDetails;
+  Stream users;
 
   void fetchData() async {
     userDetails =
         await Database().getUserDetails(FirebaseAuth.instance.currentUser.uid);
+    users = Database().fetchUsers(userDetails['uid']);
     loading = false;
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
   }
 
   String getInitials(String name) {
@@ -32,10 +40,18 @@ class _ContactsState extends State<Contacts> {
     return intitials;
   }
 
+  getChatRoomId(String u1, String u2) {
+    if (u1.substring(0, 1).codeUnitAt(0) > u2.substring(0, 1).codeUnitAt(0)) {
+      return "$u1\_$u2";
+    } else {
+      return "$u2\_$u1";
+    }
+  }
+
   Widget build(BuildContext context) {
     return !loading
         ? StreamBuilder(
-            stream: Database().fetchUsers(userDetails['uid']),
+            stream: users,
             builder: (context, snapshot) {
               return (snapshot.hasData)
                   ? ListView.builder(
@@ -62,19 +78,28 @@ class _ContactsState extends State<Contacts> {
                                 color: Color.fromRGBO(0, 20, 200, 0.4),
                               ),
                               onTap: () {
-                                Navigator.pushReplacement(
+                                var chatRoomId = getChatRoomId(
+                                    userDetails['uid'], ds['uid']);
+                                if (Database()
+                                    .checkIfChatRoomExists(chatRoomId)) {
+                                } else {
+                                  Database().createChatRoom(chatRoomId, {
+                                    'lastMsgOrig': '',
+                                    'lastMsgTrans': '',
+                                    'timestamp': '',
+                                    'sentBy': '',
+                                    'users': [userDetails['name'], ds['name']],
+                                    'userIds': [userDetails['uid'], ds['uid']],
+                                  });
+                                }
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => ChatScreen({
                                               'uid': userDetails['uid'],
                                               'prefLang':
-                                                  userDetails['prefLang']
-                                            }, {
-                                              'uid': ds['uid'],
-                                              'prefLang': ds['prefLang'],
-                                              'name': ds['name'],
-                                              'initials':
-                                                  getInitials(ds['name'])
+                                                  userDetails['prefLang'],
+                                              'receiverUid': ds['uid']
                                             })));
                               }),
                         );

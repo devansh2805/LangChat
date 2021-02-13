@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:LangChat/screens/HomeScreen.dart';
+import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:LangChat/backend/authentication.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           future: Auth().getCurrentUser(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return HomeScreen();
+              return WelcomeScreen();
             } else {
               return LoginPage();
             }
