@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:contacts_service/contacts_service.dart';
-
 import 'ChatScreen.dart';
 
 class Contacts extends StatefulWidget {
@@ -87,7 +86,8 @@ class _ContactsState extends State<Contacts> {
                       itemBuilder: (context, index) {
                         DocumentSnapshot documentSnapshot =
                             snapshot.data.docs[index];
-                        if (isInPhoneContacts(documentSnapshot["phoneNum"])) {
+                        if (isInPhoneContacts(
+                            documentSnapshot.data()["phoneNum"])) {
                           return Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -98,50 +98,59 @@ class _ContactsState extends State<Contacts> {
                                 leading: CircleAvatar(
                                     backgroundColor: Colors.black,
                                     child: Text(
-                                        getInitials(documentSnapshot['name']),
-                                        style: GoogleFonts.roboto(
+                                        getInitials(
+                                            documentSnapshot.data()['name']),
+                                        style: GoogleFonts.sourceSansPro(
                                           fontSize: 15,
                                         ))),
-                                title: Text(documentSnapshot['name']),
-                                subtitle: Text('Chat snippet for $index'),
+                                title: Text(documentSnapshot.data()['name'],
+                                    style: GoogleFonts.sourceSansPro(
+                                        fontSize: 18)),
+                                subtitle: Text(
+                                    documentSnapshot.data()['phoneNum'],
+                                    style: GoogleFonts.sourceSansPro()),
                                 trailing: Icon(
                                   Icons.check,
                                   color: Color.fromRGBO(0, 20, 200, 0.4),
                                 ),
                                 onTap: () {
                                   var chatRoomId = getChatRoomId(
-                                      userDetails['uid'],
-                                      documentSnapshot['uid']);
-                                  if (Database()
-                                      .checkIfChatRoomExists(chatRoomId)) {
-                                  } else {
-                                    Database().createChatRoom(chatRoomId, {
-                                      'lastMsgOrig': '',
-                                      'lastMsgTrans': '',
-                                      'timestamp': '',
-                                      'sentBy': '',
-                                      'users': [
-                                        userDetails['name'],
-                                        documentSnapshot['name']
-                                      ],
-                                      'userIds': [
-                                        userDetails['uid'],
-                                        documentSnapshot['uid']
-                                      ],
-                                    });
-                                  }
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ChatScreen({
-                                                'uid': userDetails['uid'],
-                                                'prefLang':
-                                                    userDetails['prefLang'],
-                                                'receiverUid':
-                                                    documentSnapshot['uid']
-                                              })));
+                                      userDetails.data()['uid'],
+                                      documentSnapshot.data()['uid']);
+                                  Map<String, dynamic> chatRoomInfo = {
+                                    'lastMsgOrig': '',
+                                    'lastMsgTrans': '',
+                                    'timestamp': '',
+                                    'sentBy': '',
+                                    'users': [
+                                      userDetails.data()['name'],
+                                      documentSnapshot.data()['name']
+                                    ],
+                                    'userIds': [
+                                      userDetails.data()['uid'],
+                                      documentSnapshot.data()['uid']
+                                    ],
+                                  };
+                                  Database()
+                                      .createChatRoom(chatRoomId, chatRoomInfo)
+                                      .then((s) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatScreen({
+                                                  'uid':
+                                                      userDetails.data()['uid'],
+                                                  'langPref': userDetails
+                                                      .data()['langPref'],
+                                                  'receiverUid':
+                                                      documentSnapshot
+                                                          .data()['uid']
+                                                })));
+                                  });
                                 }),
                           );
+                        } else {
+                          return SizedBox();
                         }
                       },
                     )

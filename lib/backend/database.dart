@@ -54,8 +54,7 @@ class Database {
         .snapshots();
   }
 
-  Future<Stream<QuerySnapshot>> fetchMessagesFromDatabase(
-      String chatRoomId) async {
+  Stream<QuerySnapshot> fetchMessagesFromDatabase(String chatRoomId) {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .doc(chatRoomId)
@@ -64,30 +63,24 @@ class Database {
         .snapshots();
   }
 
-  checkIfChatRoomExists(String chatRoomId) async {
+  Future<void> createChatRoom(String chatRoomId, Map chatRoomDetails) async {
     var chatRoom = await FirebaseFirestore.instance
         .collection('ChatRooms')
         .doc(chatRoomId)
         .get();
     if (chatRoom.exists) {
-      return true;
     } else {
-      return false;
+      FirebaseFirestore.instance
+          .collection('ChatRooms')
+          .doc(chatRoomId)
+          .set(chatRoomDetails);
     }
-  }
-
-  Future<void> createChatRoom(String chatRoomId, Map chatRoomDetails) async {
-    FirebaseFirestore.instance
-        .collection('ChatRooms')
-        .doc(chatRoomId)
-        .set(chatRoomDetails);
   }
 
   Stream<QuerySnapshot> getChatRooms(String uid) {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .where('userIds', arrayContains: uid)
-        .orderBy('timestamp')
         .snapshots();
   }
 }
