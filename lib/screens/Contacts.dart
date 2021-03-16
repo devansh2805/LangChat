@@ -1,3 +1,5 @@
+// this is the screen where you will see all of your contacts who use this app
+
 import 'package:LangChat/backend/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,9 +18,11 @@ class _ContactsState extends State<Contacts> {
   DocumentSnapshot userDetails;
   Stream users;
   Iterable<Contact> phoneContacts;
-  List phoneNumbers = List();
+  List phoneNumbers = List.empty();
 
   void fetchData() async {
+    // we fetch all the users who use the app and the list of contacts of current user
+    // out of all the users we show only the users who are in the current users contacts
     userDetails =
         await Database().getUserDetails(FirebaseAuth.instance.currentUser.uid);
     users = Database().fetchUsers(userDetails['uid']);
@@ -40,6 +44,7 @@ class _ContactsState extends State<Contacts> {
     setState(() {});
   }
 
+  // to check is the user's phone no. is in the contact list
   bool isInPhoneContacts(String userPhoneNumber) {
     bool flag = false;
     phoneNumbers.forEach((element) {
@@ -131,6 +136,7 @@ class _ContactsState extends State<Contacts> {
                                       documentSnapshot.data()['uid']
                                     ],
                                   };
+                                  // this function creates a chatroom only if it doesnt exist
                                   Database()
                                       .createChatRoom(chatRoomId, chatRoomInfo)
                                       .then((s) {
@@ -150,11 +156,13 @@ class _ContactsState extends State<Contacts> {
                                 }),
                           );
                         } else {
+                          // dont show if not belonging to contacts
                           return SizedBox();
                         }
                       },
                     )
                   : Center(
+                      // show loading animation until data is being fetched
                       child: CircularProgressIndicator(
                         valueColor:
                             AlwaysStoppedAnimation<Color>(Colors.indigo[400]),

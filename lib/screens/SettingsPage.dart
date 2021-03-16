@@ -105,8 +105,11 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 30.0,
             ),
-            RaisedButton(
-              color: Colors.indigo[400],
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.indigo[400]),
+              ),
               onPressed: () async {
                 if (_nameController.text == '') {
                   setState(() {

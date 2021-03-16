@@ -1,3 +1,5 @@
+// this is the screen where you will see the people with whom you have already chatted
+
 import 'package:LangChat/backend/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,6 +33,8 @@ class _ChatsState extends State<Chats> {
   }
 
   getChatRoomId(String u1, String u2) {
+    // we compare the first letter of both the uid
+    // this is to get the same chatroom id every time from two uids
     if (u1.substring(0, 1).codeUnitAt(0) > u2.substring(0, 1).codeUnitAt(0)) {
       return "$u1\_$u2";
     } else {
@@ -59,6 +63,7 @@ class _ChatsState extends State<Chats> {
                       itemBuilder: (context, index) {
                         DocumentSnapshot ds = snapshot.data.docs[index];
                         if (ds.data()['lastMsgOrig'] == '') {
+                          // we dont want to show the chatroom if there are no chats
                           return SizedBox();
                         } else {
                           String name = userDetails.data()['name'] ==
@@ -86,6 +91,9 @@ class _ChatsState extends State<Chats> {
                                     style: GoogleFonts.sourceSansPro(
                                         fontSize: 18)),
                                 subtitle: Text(
+                                  // if the last message was sent by user show the original msg
+                                  // else show translated msg
+                                  // we show only few snippets of the msg
                                   userDetails.data()['uid'] ==
                                           ds.data()['sentBy']
                                       ? (ds.data()['lastMsgOrig'].length > 15

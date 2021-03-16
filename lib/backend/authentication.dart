@@ -2,6 +2,7 @@ import 'package:LangChat/screens/SettingsPage.dart';
 import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'database.dart';
 
@@ -49,7 +50,7 @@ class Auth {
                     ],
                   ),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       onPressed: () async {
                         final code = _codeController.text.trim();
                         AuthCredential credential =
@@ -75,9 +76,14 @@ class Auth {
                           print("Error");
                         }
                       },
-                      child: Text("Confirm"),
-                      textColor: Colors.white,
-                      color: Colors.blue,
+                      child: Text(
+                        "Confirm",
+                        style: GoogleFonts.sourceSansPro(color: Colors.white),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.indigo[400]),
+                      ),
                     )
                   ],
                 );

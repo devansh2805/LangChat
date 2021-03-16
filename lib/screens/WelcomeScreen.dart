@@ -1,4 +1,5 @@
 import 'package:LangChat/backend/authentication.dart';
+import 'package:LangChat/screens/ChangeLanguage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -55,6 +56,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     onPressed: () async {
                       await Auth().signOut();
                       Navigator.pop(context);
+                    }),
+                IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.settings),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangeLang()));
                     })
               ],
               bottom: TabBar(

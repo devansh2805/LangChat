@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../backend/authentication.dart';
@@ -44,17 +45,19 @@ class LoginPageState extends State<LoginPage> {
             new SizedBox(
               height: 16,
             ),
-            new RaisedButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
+            new TextButton(
               onPressed: () {
                 final phoneNumber = countryCode + _phoneController.text.trim();
                 Auth().loginUser(phoneNumber, context);
               },
-              child: Text('Login'),
-              textColor: Colors.white,
-              color: Colors.blue,
+              child: Text(
+                'Login',
+                style: GoogleFonts.sourceSansPro(color: Colors.white),
+              ),
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.indigo[400]),
+              ),
             )
           ],
         ),

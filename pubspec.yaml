@@ -30,7 +30,7 @@ dependencies:
   firebase_core: ^0.7.0
   firebase_auth: ^0.20.0+1
   cloud_firestore: "^0.16.0"
-  intl_phone_field: ^1.4.2
+  intl_phone_field: ^1.4.4
   # image_picker: ^0.6.7+22
   translator: ^0.1.5
   permission_handler: ^5.1.0+2

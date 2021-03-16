@@ -24,10 +24,10 @@ class _CallsState extends State<Calls> {
               color: Color.fromRGBO(20, 200, 20, 0.4),
             ),
             onTap: () {
-              SnackBar snackbar = SnackBar(
-                content: Text('you tapped $index'),
-              );
-              Scaffold.of(context).showSnackBar(snackbar);
+              // SnackBar snackbar = SnackBar(
+              //   content: Text('you tapped $index'),
+              // );
+              // Scaffold.of(context).showSnackBar(snackbar);
             });
       },
       itemCount: listItems.length,

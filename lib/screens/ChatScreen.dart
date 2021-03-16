@@ -39,6 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   fetchData() async {
+    // we create the chatroom id from the two user's uid and fetch the messages
     chatRoomId = getChatRoomId(
         widget.userDetails['uid'], widget.userDetails['receiverUid']);
     chats = Database().fetchMessagesFromDatabase(chatRoomId);
@@ -198,7 +199,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             .translate(_msgController.text,
                                 to: receiverDetails.data()['langPref'])
                             .then((msg) {
-                          print(msg);
                           Database().sendMessage(
                               _msgController.text,
                               msg.toString(),

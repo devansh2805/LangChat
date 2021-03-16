@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
+  // check whether the phone number is already registered
   userAlreadyRegistered(String phoneNum) async {
     QuerySnapshot user = await FirebaseFirestore.instance
         .collection('users')
@@ -13,6 +14,7 @@ class Database {
     }
   }
 
+  // send a message
   sendMessage(String origMessage, String transMessage, DateTime timestamp,
       String senderUid, String chatRoomId) async {
     return FirebaseFirestore.instance
@@ -37,16 +39,19 @@ class Database {
     });
   }
 
+  // to get user details from user id
   Future<DocumentSnapshot> getUserDetails(String uid) {
     return FirebaseFirestore.instance.collection('users').doc(uid).get();
   }
 
+  // store user details
   Future<void> storeUserDetails(
       String uid, String name, String phoneNum, String langPref) async {
     return FirebaseFirestore.instance.collection('users').doc(uid).set(
         {'uid': uid, 'name': name, 'phoneNum': phoneNum, 'langPref': langPref});
   }
 
+  // fetch all users to show in the Contacts page
   Stream<QuerySnapshot> fetchUsers(String uid) {
     return FirebaseFirestore.instance
         .collection('users')
@@ -54,6 +59,7 @@ class Database {
         .snapshots();
   }
 
+  // fetch messages from the chatroom when a user opens chat
   Stream<QuerySnapshot> fetchMessagesFromDatabase(String chatRoomId) {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
@@ -63,6 +69,7 @@ class Database {
         .snapshots();
   }
 
+  // create a chatroom if it does not exist
   Future<void> createChatRoom(String chatRoomId, Map chatRoomDetails) async {
     var chatRoom = await FirebaseFirestore.instance
         .collection('ChatRooms')
@@ -77,10 +84,19 @@ class Database {
     }
   }
 
+  // to get chatrooms on chats page (people that we have already chatted with)
   Stream<QuerySnapshot> getChatRooms(String uid) {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .where('userIds', arrayContains: uid)
         .snapshots();
+  }
+
+  // change the Language
+  changeLangPref(String uid, String langPref) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'langPref': langPref});
   }
 }
