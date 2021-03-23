@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:LangChat/screens/StartApp.dart';
 import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:LangChat/backend/authentication.dart';
@@ -12,20 +13,41 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool showStartScreen = true;
+
+  changeScreen() async {
+    await Future.delayed(Duration(seconds: 5));
+    showStartScreen = false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    changeScreen();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-          future: Auth().getCurrentUser(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return WelcomeScreen();
-            } else {
-              return LoginPage();
-            }
-          }),
+      home: !showStartScreen
+          ? FutureBuilder(
+              future: Auth().getCurrentUser(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return WelcomeScreen();
+                } else {
+                  return LoginPage();
+                }
+              })
+          : Start(),
       theme: new ThemeData(primarySwatch: Colors.grey),
     );
   }
