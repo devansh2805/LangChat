@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
               value: prefLang,
               icon: Icon(Icons.keyboard_arrow_down),
               iconSize: 24,
-              style: GoogleFonts.roboto(
+              style: GoogleFonts.sourceSansPro(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: Container(
                       child: Text(
                         value,
-                        style: GoogleFonts.roboto(),
+                        style: GoogleFonts.sourceSansPro(),
                       ),
                     ));
               }).toList(),
@@ -130,7 +130,8 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               child: Text(
                 'Next',
-                style: GoogleFonts.roboto(color: Colors.white, fontSize: 18),
+                style: GoogleFonts.sourceSansPro(
+                    color: Colors.white, fontSize: 18),
               ),
             ),
           ],

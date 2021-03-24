@@ -18,9 +18,12 @@ class Auth {
           UserCredential userCredential =
               await _auth.signInWithCredential(credential);
           User user = userCredential.user;
-
-          if (user != null) {
-            if (Database().userAlreadyRegistered(user.phoneNumber)) {
+          print(user);
+          if (user.phoneNumber != null) {
+            var check =
+                await Database().userAlreadyRegistered(user.phoneNumber);
+            print(check);
+            if (check == true) {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => WelcomeScreen()));
             } else {
@@ -59,9 +62,12 @@ class Auth {
                         UserCredential userCredential =
                             await _auth.signInWithCredential(credential);
                         User user = userCredential.user;
-                        if (user != null) {
-                          if (Database()
-                              .userAlreadyRegistered(user.phoneNumber)) {
+                        print(user);
+                        if (user.phoneNumber != null) {
+                          var check = await Database()
+                              .userAlreadyRegistered(user.phoneNumber);
+                          print(check);
+                          if (check == true) {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
