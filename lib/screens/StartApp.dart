@@ -15,7 +15,7 @@ class _StartState extends State<Start> {
           child: Column(
             children: [
               SizedBox(height: 200),
-              Image.asset("assets/a.png"),
+              Image.asset("assets/chatlogo.png"),
               SizedBox(height: 30),
               Text("LangChat",
                   style: GoogleFonts.sourceSansPro(
