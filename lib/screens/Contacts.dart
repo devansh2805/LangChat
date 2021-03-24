@@ -18,7 +18,7 @@ class _ContactsState extends State<Contacts> {
   DocumentSnapshot userDetails;
   Stream users;
   Iterable<Contact> phoneContacts;
-  List phoneNumbers = List.empty();
+  List phoneNumbers = [];
 
   void fetchData() async {
     // we fetch all the users who use the app and the list of contacts of current user

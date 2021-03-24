@@ -1,5 +1,6 @@
 import 'package:LangChat/backend/authentication.dart';
 import 'package:LangChat/screens/ChangeLanguage.dart';
+import 'package:LangChat/screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,7 +57,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     icon: Icon(Icons.exit_to_app),
                     onPressed: () async {
                       await Auth().signOut();
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     }),
                 IconButton(
                     color: Colors.white,
