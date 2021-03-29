@@ -1,6 +1,7 @@
 import 'package:LangChat/backend/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
 
@@ -17,7 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String chatRoomId;
   Stream chats;
   DocumentSnapshot receiverDetails;
-  final TextEditingController _msgController = TextEditingController();
+  final TextEditingController _msgController = new TextEditingController();
   final translator = GoogleTranslator();
 
   String getInitials(String name) {
@@ -53,8 +54,13 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     fetchData();
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _msgController.dispose();
+    super.dispose();
   }
 
   @override
@@ -182,6 +188,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _msgController,
                       decoration: InputDecoration(
+                        border: InputBorder.none,
                         hintText: "Send some message...",
                       ),
                     ),
