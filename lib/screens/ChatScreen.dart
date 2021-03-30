@@ -81,16 +81,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 style: GoogleFonts.sourceSansPro(
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
-              actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      // call person
-                    })
-              ],
               backgroundColor: Colors.white,
             ),
             body: ListView(children: [
