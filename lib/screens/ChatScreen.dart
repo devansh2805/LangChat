@@ -17,7 +17,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String chatRoomId;
   Stream chats;
   DocumentSnapshot receiverDetails;
-  final TextEditingController _msgController = TextEditingController();
+  final TextEditingController _msgController = new TextEditingController();
   final translator = GoogleTranslator();
 
   String getInitials(String name) {
@@ -91,8 +91,13 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     fetchData();
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _msgController.dispose();
+    super.dispose();
   }
 
   @override
@@ -114,16 +119,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 style: GoogleFonts.sourceSansPro(
                     color: Colors.black, fontWeight: FontWeight.bold),
               ),
-              actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      // call person
-                    })
-              ],
               backgroundColor: Colors.white,
             ),
             body: ListView(children: [
@@ -230,6 +225,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _msgController,
                       decoration: InputDecoration(
+                        border: InputBorder.none,
                         hintText: "Send some message...",
                       ),
                     ),

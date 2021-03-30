@@ -4,7 +4,6 @@ import 'package:LangChat/screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'Calls.dart' as calls;
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
 
@@ -20,7 +19,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabSelection);
   }
 
@@ -78,10 +77,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         style: GoogleFonts.sourceSansPro(fontSize: 18)),
                   ),
                   Tab(
-                    child: Text('Calls',
-                        style: GoogleFonts.sourceSansPro(fontSize: 18)),
-                  ),
-                  Tab(
                     child: Text('Contacts',
                         style: GoogleFonts.sourceSansPro(fontSize: 18)),
                   ),
@@ -92,7 +87,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               controller: _tabController,
               children: [
                 chats.Chats(),
-                calls.Calls(),
                 contacts.Contacts(),
               ],
             )),
