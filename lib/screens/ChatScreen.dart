@@ -50,6 +50,44 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {});
   }
 
+  Future<void> _showAlertDialog(context, dynamic snapshot, int index) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Alert',
+            style: GoogleFonts.sourceSansPro(),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to delete this chat?.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                child: Text('Yes'),
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .runTransaction((Transaction myTransaction) async {
+                    myTransaction.delete(snapshot.data.docs[index].reference);
+                  });
+                  Navigator.pop(context);
+                }),
+            TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     fetchData();
@@ -96,63 +134,73 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
-                              return Container(
-                                // message area
-                                margin: EdgeInsets.all(10),
-                                alignment:
-                                    ds['senderUid'] == widget.userDetails['uid']
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                width: MediaQuery.of(context).size.width - 10,
-                                child: Column(children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? Colors.indigo[400]
-                                            : Color(0xff7269ef),
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            topRight: Radius.circular(15))),
-                                    padding: EdgeInsets.all(5),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.6,
-                                    child: Text(
-                                        ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? ds['origMessage']
-                                            : ds['transMessage'],
-                                        style: GoogleFonts.sourceSansPro(
-                                            color: Colors.white, fontSize: 16)),
-                                  ),
-                                  Container(
+                              return InkWell(
+                                onLongPress: () {
+                                  _showAlertDialog(context, snapshot, index);
+                                },
+                                child: Container(
+                                  // message area
+                                  margin: EdgeInsets.all(10),
+                                  alignment: ds['senderUid'] ==
+                                          widget.userDetails['uid']
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  width: MediaQuery.of(context).size.width - 10,
+                                  child: Column(children: [
+                                    Container(
                                       decoration: BoxDecoration(
                                           color: ds['senderUid'] ==
                                                   widget.userDetails['uid']
-                                              ? Colors.indigo[300]
-                                              : Color(0xff9b95f5),
+                                              ? Colors.indigo[400]
+                                              : Color(0xff7269ef),
                                           borderRadius: BorderRadius.only(
-                                              bottomLeft: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(15)
-                                                  : Radius.circular(0),
-                                              bottomRight: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(0)
-                                                  : Radius.circular(15))),
+                                              topLeft: Radius.circular(15),
+                                              topRight: Radius.circular(15))),
                                       padding: EdgeInsets.all(5),
                                       width: MediaQuery.of(context).size.width *
                                           0.6,
-                                      alignment: Alignment.centerLeft,
                                       child: Text(
-                                        ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? ds['transMessage']
-                                            : ds['origMessage'],
-                                        style: GoogleFonts.sourceSansPro(
-                                            color: Colors.white, fontSize: 16),
-                                      )),
-                                ]),
+                                          ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? ds['origMessage']
+                                              : ds['transMessage'],
+                                          style: GoogleFonts.sourceSansPro(
+                                              color: Colors.white,
+                                              fontSize: 16)),
+                                    ),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Colors.indigo[300]
+                                                : Color(0xff9b95f5),
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: ds['senderUid'] ==
+                                                        widget
+                                                            .userDetails['uid']
+                                                    ? Radius.circular(15)
+                                                    : Radius.circular(0),
+                                                bottomRight: ds['senderUid'] ==
+                                                        widget
+                                                            .userDetails['uid']
+                                                    ? Radius.circular(0)
+                                                    : Radius.circular(15))),
+                                        padding: EdgeInsets.all(5),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.6,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? ds['transMessage']
+                                              : ds['origMessage'],
+                                          style: GoogleFonts.sourceSansPro(
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                        )),
+                                  ]),
+                                ),
                               );
                             });
                       } else {

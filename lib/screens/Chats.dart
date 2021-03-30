@@ -52,6 +52,44 @@ class _ChatsState extends State<Chats> {
     return intitials;
   }
 
+  Future<void> _showAlertDialog(context, dynamic snapshot, int index) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Alert',
+            style: GoogleFonts.sourceSansPro(),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to delete this chat?.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+                child: Text('Yes'),
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .runTransaction((Transaction myTransaction) async {
+                    myTransaction.delete(snapshot.data.docs[index].reference);
+                  });
+                  Navigator.pop(context);
+                }),
+            TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     return !loading
         ? StreamBuilder(
@@ -111,9 +149,12 @@ class _ChatsState extends State<Chats> {
                                   style:
                                       GoogleFonts.sourceSansPro(fontSize: 16),
                                 ),
-                                trailing: Icon(
-                                  Icons.check,
-                                  color: Color.fromRGBO(0, 20, 200, 0.4),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.grey,
+                                  onPressed: () async {
+                                    _showAlertDialog(context, snapshot, index);
+                                  },
                                 ),
                                 onTap: () {
                                   Navigator.push(
