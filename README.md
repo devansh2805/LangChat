@@ -1,7 +1,8 @@
 # LangChat
 
 
-<div><img src="./assets/chatlogo.png" height="150px">
+<div>
+<p align="center"><img src="./assets/chatlogoReadme.png" height="150px"></p>
 </div>
 
 LangChat is very similar to regular chat application, wherein users communicate with each other using messages and calls over the internet. What langChat brings in new is the idea of removing language barriers in such a communication system.
