@@ -62,15 +62,15 @@ class _ContactsState extends State<Contacts> {
     super.initState();
   }
 
-  String getInitials(String name) {
-    String intitials = '';
-    name.split(' ').forEach((word) {
-      if (word.length > 0) {
-        intitials += word[0].toUpperCase();
-      }
-    });
-    return intitials;
-  }
+  // String getInitials(String name) {
+  //   String intitials = '';
+  //   name.split(' ').forEach((word) {
+  //     if (word.length > 0) {
+  //       intitials += word[0].toUpperCase();
+  //     }
+  //   });
+  //   return intitials;
+  // }
 
   getChatRoomId(String u1, String u2) {
     if (u1.substring(0, 1).codeUnitAt(0) > u2.substring(0, 1).codeUnitAt(0)) {
@@ -101,13 +101,13 @@ class _ContactsState extends State<Contacts> {
                             margin: EdgeInsets.all(6),
                             child: ListTile(
                                 leading: CircleAvatar(
-                                    backgroundColor: Colors.black,
-                                    child: Text(
-                                        getInitials(
-                                            documentSnapshot.data()['name']),
-                                        style: GoogleFonts.sourceSansPro(
-                                          fontSize: 15,
-                                        ))),
+                                  backgroundImage: documentSnapshot
+                                              .data()["imageUrl"] ==
+                                          ""
+                                      ? AssetImage("assets/dummy.png")
+                                      : NetworkImage(
+                                          documentSnapshot.data()["imageUrl"]),
+                                ),
                                 title: Text(documentSnapshot.data()['name'],
                                     style: GoogleFonts.sourceSansPro(
                                         fontSize: 18)),

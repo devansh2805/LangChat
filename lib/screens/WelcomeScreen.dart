@@ -1,5 +1,5 @@
 import 'package:LangChat/backend/authentication.dart';
-import 'package:LangChat/screens/ChangeLanguage.dart';
+import 'package:LangChat/screens/UpdateProfile.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChangeLang()));
+                              builder: (context) => UpdateProfile()));
                     })
               ],
               bottom: TabBar(

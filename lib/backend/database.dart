@@ -16,7 +16,7 @@ class Database {
 
   // send a message
   sendMessage(String origMessage, String transMessage, DateTime timestamp,
-      String senderUid, String chatRoomId) async {
+      String senderUid, String chatRoomId, String msgType) async {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .doc(chatRoomId)
@@ -26,6 +26,7 @@ class Database {
       'transMessage': transMessage,
       'timestamp': timestamp,
       'senderUid': senderUid,
+      'msgType': msgType
     }).then((value) async {
       await FirebaseFirestore.instance
           .collection('ChatRooms')
@@ -37,6 +38,13 @@ class Database {
         'sentBy': senderUid
       });
     });
+  }
+
+  Future<void> updateProfilePic(String uid, String url) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({"imageUrl": url});
   }
 
   // to get user details from user id
