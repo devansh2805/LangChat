@@ -90,9 +90,14 @@ class _AudioWidgetState extends State<AudioWidget> {
                     _isListening = false;
                     _loadingVisibility = true;
                   });
-                  print(_listeningString);
                   _translatedtext = await _translateText();
-                  print(_translatedtext);
+                  if (_translatedtext == "") {
+                    setState(() {
+                      _audioString = "Couldnot capture Voice Record Again";
+                      _loadingVisibility = false;
+                      _recordVisibility = true;
+                    });
+                  }
                 },
                 child: Text("Stop Recording"),
               ),
@@ -153,12 +158,15 @@ class _AudioWidgetState extends State<AudioWidget> {
                           FirebaseAuth.instance.currentUser.uid,
                           _chatRoomId,
                           "audio");
+                      Navigator.pop(context);
                     },
                   ),
                   IconButton(
                     icon: Icon(Icons.cancel_outlined),
                     color: Colors.red,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),
@@ -195,17 +203,20 @@ class _AudioWidgetState extends State<AudioWidget> {
     setState(() {
       _loadingVisibility = true;
     });
-    print(_receiverLanguage);
-    Translation message = await _googleTranslator.translate(
-      _listeningString,
-      to: _receiverLanguage,
-    );
-    setState(() {
-      _loadingVisibility = false;
-      _audioFilesVisibility = true;
-      _sendCancelVisibility = true;
-    });
-    return message.toString();
+    if (_listeningString != "") {
+      Translation message = await _googleTranslator.translate(
+        _listeningString,
+        to: _receiverLanguage,
+      );
+      setState(() {
+        _loadingVisibility = false;
+        _audioFilesVisibility = true;
+        _sendCancelVisibility = true;
+      });
+      return message.toString();
+    } else {
+      return "";
+    }
   }
 
   void _textToSpeech(String text) async {

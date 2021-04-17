@@ -80,14 +80,20 @@ class _ChatScreenState extends State<ChatScreen> {
                 margin: EdgeInsets.all(8),
                 child: CircleAvatar(
                   backgroundImage: receiverDetails.data()["imageUrl"] == ""
-                      ? AssetImage("assets/dummy.png")
-                      : NetworkImage(receiverDetails.data()["imageUrl"]),
+                      ? AssetImage(
+                          "assets/dummy.png",
+                        )
+                      : NetworkImage(
+                          receiverDetails.data()["imageUrl"],
+                        ),
                 ),
               ),
               title: Text(
                 receiverDetails.data()['name'],
                 style: GoogleFonts.sourceSansPro(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               backgroundColor: Colors.white,
             ),
@@ -112,77 +118,84 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ? Alignment.centerRight
                                         : Alignment.centerLeft,
                                 width: MediaQuery.of(context).size.width - 10,
-                                child: Column(children: [
-                                  Container(
-                                    decoration: BoxDecoration(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
                                         color: ds['senderUid'] ==
                                                 widget.userDetails['uid']
                                             ? Colors.indigo[400]
                                             : Color(0xff7269ef),
                                         borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            topRight: Radius.circular(15))),
-                                    padding: EdgeInsets.all(5),
-                                    width: ds['msgType'] == "text"
-                                        ? MediaQuery.of(context).size.width *
-                                            0.6
-                                        : MediaQuery.of(context).size.width *
-                                            0.25,
-                                    child: ds['msgType'] == 'text'
-                                        ? Text(
-                                            ds['senderUid'] ==
-                                                    widget.userDetails['uid']
-                                                ? ds['origMessage']
-                                                : ds['transMessage'],
-                                            style: msgStyle)
-                                        : Row(
-                                            children: [
-                                              // Text(
-                                              //     ds['senderUid'] ==
-                                              //             widget.userDetails[
-                                              //                 'uid']
-                                              //         ? 'Original'
-                                              //         : 'Translated',
-                                              //     style: msgStyle),
-                                              // SizedBox(width: 3),
-                                              MaterialButton(
-                                                animationDuration:
-                                                    Duration(seconds: 1),
-                                                onPressed: () {
-                                                  ds['senderUid'] ==
-                                                          widget.userDetails[
-                                                              'uid']
-                                                      ? _flutterTts.speak(
-                                                          ds['origMessage'])
-                                                      : _flutterTts.speak(
-                                                          ds['transMessage']);
-                                                },
-                                                color: Colors.indigo[50],
-                                                textColor: Colors.grey,
-                                                splashColor: Colors.indigo,
-                                                child: Icon(
-                                                  Icons.play_arrow,
-                                                  size: 24,
-                                                ),
-                                                shape: CircleBorder(),
-                                              ),
-                                            ],
-                                          ),
-                                  ),
-                                  Container(
-                                      decoration: BoxDecoration(
-                                          color: ds['senderUid'] == widget.userDetails['uid']
-                                              ? Colors.indigo[300]
-                                              : Color(0xff9b95f5),
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: ds['senderUid'] ==
+                                          topLeft: Radius.circular(15),
+                                          topRight: Radius.circular(15),
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.all(5),
+                                      width: ds['msgType'] == "text"
+                                          ? MediaQuery.of(context).size.width *
+                                              0.6
+                                          : MediaQuery.of(context).size.width *
+                                              0.25,
+                                      child: ds['msgType'] == 'text'
+                                          ? Text(
+                                              ds['senderUid'] ==
                                                       widget.userDetails['uid']
-                                                  ? Radius.circular(15)
-                                                  : Radius.circular(0),
-                                              bottomRight:
-                                                  ds['senderUid'] == widget.userDetails['uid']
-                                                      ? Radius.circular(0)
-                                                      : Radius.circular(15))),
+                                                  ? ds['origMessage']
+                                                  : ds['transMessage'],
+                                              style: msgStyle,
+                                            )
+                                          : Row(
+                                              children: [
+                                                // Text(
+                                                //     ds['senderUid'] ==
+                                                //             widget.userDetails[
+                                                //                 'uid']
+                                                //         ? 'Original'
+                                                //         : 'Translated',
+                                                //     style: msgStyle),
+                                                // SizedBox(width: 3),
+                                                MaterialButton(
+                                                  animationDuration:
+                                                      Duration(seconds: 1),
+                                                  onPressed: () {
+                                                    ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid']
+                                                        ? _flutterTts.speak(
+                                                            ds['origMessage'])
+                                                        : _flutterTts.speak(
+                                                            ds['transMessage']);
+                                                  },
+                                                  color: Colors.indigo[50],
+                                                  textColor: Colors.grey,
+                                                  splashColor: Colors.indigo,
+                                                  child: Icon(
+                                                    Icons.play_arrow,
+                                                    size: 24,
+                                                  ),
+                                                  shape: CircleBorder(),
+                                                ),
+                                              ],
+                                            ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: ds['senderUid'] ==
+                                                widget.userDetails['uid']
+                                            ? Colors.indigo[300]
+                                            : Color(0xff9b95f5),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? Radius.circular(15)
+                                              : Radius.circular(0),
+                                          bottomRight: ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? Radius.circular(0)
+                                              : Radius.circular(15),
+                                        ),
+                                      ),
                                       padding: EdgeInsets.all(5),
                                       width: ds['msgType'] == "text"
                                           ? MediaQuery.of(context).size.width *
@@ -192,10 +205,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                       alignment: Alignment.centerLeft,
                                       child: ds['msgType'] == 'text'
                                           ? Text(
-                                              ds['senderUid'] == widget.userDetails['uid']
+                                              ds['senderUid'] ==
+                                                      widget.userDetails['uid']
                                                   ? ds['transMessage']
                                                   : ds['origMessage'],
-                                              style: msgStyle)
+                                              style: msgStyle,
+                                            )
                                           : Row(
                                               children: [
                                                 // Text(
@@ -229,8 +244,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   shape: CircleBorder(),
                                                 ),
                                               ],
-                                            )),
-                                ]),
+                                            ),
+                                    ),
+                                  ],
+                                ),
                               );
                             });
                       } else {
@@ -247,66 +264,68 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.white),
-                child: Row(children: [
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: _msgController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Send some message...",
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: _msgController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Send some message...",
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.mic,
-                      color: Colors.green,
+                    IconButton(
+                      icon: Icon(
+                        Icons.mic,
+                        color: Colors.green,
+                      ),
+                      onPressed: () async {
+                        if (await Permission.microphone.isGranted) {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                return AudioWidget(
+                                    receiverDetails.data()['langPref'],
+                                    chatRoomId);
+                              });
+                        } else {
+                          Permission.microphone.request();
+                        }
+                      },
                     ),
-                    onPressed: () async {
-                      if (await Permission.microphone.isGranted) {
-                        showDialog(
-                            context: context,
-                            barrierDismissible: true,
-                            builder: (context) {
-                              return AudioWidget(
-                                  receiverDetails.data()['langPref'],
-                                  chatRoomId);
-                            });
-                      } else {
-                        Permission.microphone.request();
-                      }
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.black,
-                    ),
-                    color: Colors.white,
-                    onPressed: () {
-                      if (_msgController.text.isEmpty) {
-                      } else {
-                        translator
-                            .translate(_msgController.text,
-                                to: receiverDetails.data()['langPref'])
-                            .then((msg) {
-                          Database().sendMessage(
-                              _msgController.text,
-                              msg.toString(),
-                              DateTime.now(),
-                              widget.userDetails['uid'],
-                              chatRoomId,
-                              "text");
-                          _msgController.text = '';
-                          setState(() {});
-                        });
-                      }
-                    },
-                  )
-                ]),
+                    IconButton(
+                      icon: Icon(
+                        Icons.send,
+                        color: Colors.black,
+                      ),
+                      color: Colors.white,
+                      onPressed: () {
+                        if (_msgController.text.isEmpty) {
+                        } else {
+                          translator
+                              .translate(_msgController.text,
+                                  to: receiverDetails.data()['langPref'])
+                              .then((msg) {
+                            Database().sendMessage(
+                                _msgController.text,
+                                msg.toString(),
+                                DateTime.now(),
+                                widget.userDetails['uid'],
+                                chatRoomId,
+                                "text");
+                            _msgController.text = '';
+                            setState(() {});
+                          });
+                        }
+                      },
+                    )
+                  ],
+                ),
               ),
             ]))
         : Center(
