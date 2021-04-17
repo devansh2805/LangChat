@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'AudioWidget.dart';
 
 // ignore: must_be_immutable
@@ -21,6 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
   DocumentSnapshot receiverDetails;
   final TextEditingController _msgController = new TextEditingController();
   final translator = GoogleTranslator();
+  FlutterTts _flutterTts;
 
   String getInitials(String name) {
     String intitials = '';
@@ -56,6 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     fetchData();
     super.initState();
+    _flutterTts = FlutterTts();
   }
 
   @override
@@ -145,7 +148,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                               MaterialButton(
                                                 animationDuration:
                                                     Duration(seconds: 1),
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? _flutterTts.speak(
+                                                          ds['origMessage'])
+                                                      : _flutterTts.speak(
+                                                          ds['transMessage']);
+                                                },
                                                 color: Colors.indigo[50],
                                                 textColor: Colors.grey,
                                                 splashColor: Colors.indigo,
@@ -199,7 +210,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 MaterialButton(
                                                   animationDuration:
                                                       Duration(seconds: 1),
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid']
+                                                        ? _flutterTts.speak(
+                                                            ds['transMessage'])
+                                                        : _flutterTts.speak(
+                                                            ds['origMessage']);
+                                                  },
                                                   color: Colors.indigo[50],
                                                   textColor: Colors.grey,
                                                   splashColor: Colors.indigo,
@@ -253,7 +272,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             barrierDismissible: true,
                             builder: (context) {
                               return AudioWidget(
-                                  receiverDetails.data()['langPref']);
+                                  receiverDetails.data()['langPref'],
+                                  chatRoomId);
                             });
                       } else {
                         Permission.microphone.request();

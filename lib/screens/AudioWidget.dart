@@ -1,3 +1,5 @@
+import 'package:LangChat/backend/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -7,12 +9,15 @@ import 'package:translator/translator.dart';
 // ignore: must_be_immutable
 class AudioWidget extends StatefulWidget {
   String receiverLanguage;
+  String roomId;
 
-  AudioWidget(String language) {
+  AudioWidget(String language, String chatRoomID) {
     receiverLanguage = language;
+    roomId = chatRoomID;
   }
   @override
-  State<StatefulWidget> createState() => _AudioWidgetState(receiverLanguage);
+  State<StatefulWidget> createState() =>
+      _AudioWidgetState(receiverLanguage, roomId);
 }
 
 class _AudioWidgetState extends State<AudioWidget> {
@@ -26,12 +31,14 @@ class _AudioWidgetState extends State<AudioWidget> {
   String _listeningString = "";
   String _translatedtext = "";
   String _receiverLanguage = "";
+  String _chatRoomId = "";
   SpeechToText _speechToText;
   FlutterTts _flutterTts;
   final GoogleTranslator _googleTranslator = GoogleTranslator();
 
-  _AudioWidgetState(String receiverLanguage) {
+  _AudioWidgetState(String receiverLanguage, String chatRoomId) {
     _receiverLanguage = receiverLanguage;
+    _chatRoomId = chatRoomId;
   }
 
   @override
@@ -138,7 +145,15 @@ class _AudioWidgetState extends State<AudioWidget> {
                   IconButton(
                     icon: Icon(Icons.send),
                     color: Colors.green,
-                    onPressed: () {},
+                    onPressed: () {
+                      Database().sendMessage(
+                          _listeningString,
+                          _translatedtext,
+                          DateTime.now(),
+                          FirebaseAuth.instance.currentUser.uid,
+                          _chatRoomId,
+                          "audio");
+                    },
                   ),
                   IconButton(
                     icon: Icon(Icons.cancel_outlined),
@@ -188,6 +203,7 @@ class _AudioWidgetState extends State<AudioWidget> {
     setState(() {
       _loadingVisibility = false;
       _audioFilesVisibility = true;
+      _sendCancelVisibility = true;
     });
     return message.toString();
   }
