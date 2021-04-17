@@ -2,9 +2,7 @@ import 'dart:async';
 import 'package:LangChat/screens/StartApp.dart';
 import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:LangChat/screens/LoginPage.dart';
-import 'package:LangChat/backend/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 

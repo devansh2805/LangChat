@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'AudioWidget.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatefulWidget {
@@ -238,6 +240,25 @@ class _ChatScreenState extends State<ChatScreen> {
                         hintText: "Send some message...",
                       ),
                     ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.mic,
+                      color: Colors.green,
+                    ),
+                    onPressed: () async {
+                      if (await Permission.microphone.isGranted) {
+                        showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (context) {
+                              return AudioWidget(
+                                  receiverDetails.data()['langPref']);
+                            });
+                      } else {
+                        Permission.microphone.request();
+                      }
+                    },
                   ),
                   IconButton(
                     icon: Icon(
