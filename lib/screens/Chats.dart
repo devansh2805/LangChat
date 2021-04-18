@@ -95,89 +95,100 @@ class _ChatsState extends State<Chats> {
         ? StreamBuilder(
             stream: chatRooms,
             builder: (context, snapshot) {
-              return (snapshot.hasData)
-                  ? ListView.builder(
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot ds = snapshot.data.docs[index];
-                        if (ds.data()['lastMsgOrig'] == '') {
-                          // we dont want to show the chatroom if there are no chats
-                          return SizedBox();
-                        } else {
-                          String name = userDetails.data()['name'] ==
-                                  ds.data()['users'][0]
-                              ? ds.data()['users'][1]
-                              : ds.data()['users'][0];
-                          String uid = userDetails.data()['uid'] ==
-                                  ds.data()['userIds'][0]
-                              ? ds.data()['userIds'][1]
-                              : ds.data()['userIds'][0];
-                          return Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            margin: EdgeInsets.all(6),
-                            child: ListTile(
-                                leading: CircleAvatar(
-                                    backgroundColor: Colors.black,
-                                    child: Text(getInitials(name),
-                                        style: GoogleFonts.sourceSansPro(
-                                          fontSize: 18,
-                                        ))),
-                                title: Text(name,
-                                    style: GoogleFonts.sourceSansPro(
-                                        fontSize: 18)),
-                                subtitle: Text(
-                                  // if the last message was sent by user show the original msg
-                                  // else show translated msg
-                                  // we show only few snippets of the msg
-                                  userDetails.data()['uid'] ==
-                                          ds.data()['sentBy']
-                                      ? (ds.data()['lastMsgOrig'].length > 15
-                                          ? ds
-                                                  .data()['lastMsgOrig']
-                                                  .substring(0, 15) +
-                                              '...'
-                                          : ds.data()['lastMsgOrig'])
-                                      : (ds.data()['lastMsgTrans'].length > 15
-                                          ? ds
-                                                  .data()['lastMsgTrans']
-                                                  .substring(0, 15) +
-                                              '...'
-                                          : ds.data()['lastMsgTrans']),
-                                  style:
-                                      GoogleFonts.sourceSansPro(fontSize: 16),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete),
-                                  color: Colors.grey,
-                                  onPressed: () async {
-                                    _showAlertDialog(context, snapshot, index);
-                                  },
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ChatScreen({
-                                                'uid':
-                                                    userDetails.data()['uid'],
-                                                'langPref': userDetails
-                                                    .data()['langPref'],
-                                                'receiverUid': uid
-                                              })));
-                                }),
-                          );
-                        }
-                      })
-                  : Center(
-                      child: Center(
-                        child: Text('You have not chatted with anyone yet'),
-                      ),
-                    );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
+                ));
+              } else {
+                return (snapshot.hasData)
+                    ? ListView.builder(
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot ds = snapshot.data.docs[index];
+                          if (ds.data()['lastMsgOrig'] == '') {
+                            // we dont want to show the chatroom if there are no chats
+                            return SizedBox();
+                          } else {
+                            String name = userDetails.data()['name'] ==
+                                    ds.data()['users'][0]
+                                ? ds.data()['users'][1]
+                                : ds.data()['users'][0];
+                            String uid = userDetails.data()['uid'] ==
+                                    ds.data()['userIds'][0]
+                                ? ds.data()['userIds'][1]
+                                : ds.data()['userIds'][0];
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              margin: EdgeInsets.all(6),
+                              child: ListTile(
+                                  leading: CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                      child: Text(getInitials(name),
+                                          style: GoogleFonts.sourceSansPro(
+                                            fontSize: 18,
+                                          ))),
+                                  title: Text(name,
+                                      style: GoogleFonts.sourceSansPro(
+                                          fontSize: 18)),
+                                  subtitle: Text(
+                                    // if the last message was sent by user show the original msg
+                                    // else show translated msg
+                                    // we show only few snippets of the msg
+                                    userDetails.data()['uid'] ==
+                                            ds.data()['sentBy']
+                                        ? (ds.data()['lastMsgOrig'].length > 15
+                                            ? ds
+                                                    .data()['lastMsgOrig']
+                                                    .substring(0, 15) +
+                                                '...'
+                                            : ds.data()['lastMsgOrig'])
+                                        : (ds.data()['lastMsgTrans'].length > 15
+                                            ? ds
+                                                    .data()['lastMsgTrans']
+                                                    .substring(0, 15) +
+                                                '...'
+                                            : ds.data()['lastMsgTrans']),
+                                    style:
+                                        GoogleFonts.sourceSansPro(fontSize: 16),
+                                  ),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.grey,
+                                    onPressed: () async {
+                                      _showAlertDialog(
+                                          context, snapshot, index);
+                                    },
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatScreen({
+                                                  'uid':
+                                                      userDetails.data()['uid'],
+                                                  'langPref': userDetails
+                                                      .data()['langPref'],
+                                                  'receiverUid': uid
+                                                })));
+                                  }),
+                            );
+                          }
+                        })
+                    : Center(
+                        child: Center(
+                          child: Text('You have not chatted with anyone yet'),
+                        ),
+                      );
+              }
             },
           )
-        : Center(child: CircularProgressIndicator());
+        : Center(
+            child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
+          ));
   }
 }

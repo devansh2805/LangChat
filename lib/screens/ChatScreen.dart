@@ -6,6 +6,7 @@ import 'package:translator/translator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'AudioWidget.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class ChatScreen extends StatefulWidget {
@@ -67,8 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  TextStyle msgStyle =
-      GoogleFonts.sourceSansPro(color: Colors.white, fontSize: 16);
+  TextStyle msgStyle = GoogleFonts.montserrat(
+      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500);
 
   @override
   Widget build(BuildContext context) {
@@ -147,14 +148,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                             )
                                           : Row(
                                               children: [
-                                                // Text(
-                                                //     ds['senderUid'] ==
-                                                //             widget.userDetails[
-                                                //                 'uid']
-                                                //         ? 'Original'
-                                                //         : 'Translated',
-                                                //     style: msgStyle),
-                                                // SizedBox(width: 3),
                                                 MaterialButton(
                                                   animationDuration:
                                                       Duration(seconds: 1),
@@ -213,15 +206,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                             )
                                           : Row(
                                               children: [
-                                                // Text(
-                                                //   ds['senderUid'] ==
-                                                //           widget.userDetails[
-                                                //               'uid']
-                                                //       ? 'Translated'
-                                                //       : 'Original',
-                                                //   style: msgStyle,
-                                                // ),
-                                                // SizedBox(width: 3),
                                                 MaterialButton(
                                                   animationDuration:
                                                       Duration(seconds: 1),
@@ -246,6 +230,30 @@ class _ChatScreenState extends State<ChatScreen> {
                                               ],
                                             ),
                                     ),
+                                    Container(
+                                        width: ds['msgType'] == "text"
+                                            ? MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6
+                                            : MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.25,
+                                        alignment: ds['senderUid'] ==
+                                                widget.userDetails['uid']
+                                            ? Alignment.centerRight
+                                            : Alignment.centerLeft,
+                                        color: Colors.white.withOpacity(0),
+                                        child: Text(
+                                            DateFormat('dd MMM  HH:mm')
+                                                .format(
+                                                    ds['timestamp'].toDate())
+                                                .toString(),
+                                            style: GoogleFonts.montserrat(
+                                                fontStyle: FontStyle.italic,
+                                                color: Colors.black,
+                                                fontSize: 12)))
                                   ],
                                 ),
                               );
