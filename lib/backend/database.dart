@@ -35,7 +35,8 @@ class Database {
         'lastMsgOrig': origMessage,
         'lastMsgTrans': transMessage,
         'timestamp': timestamp,
-        'sentBy': senderUid
+        'sentBy': senderUid,
+        'lastMsgType': msgType
       });
     });
   }
