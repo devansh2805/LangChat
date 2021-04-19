@@ -1,3 +1,4 @@
+// Settings Page
 import 'package:LangChat/backend/database.dart';
 import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
