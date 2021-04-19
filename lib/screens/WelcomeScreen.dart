@@ -46,7 +46,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         child: Scaffold(
           backgroundColor: Colors.indigo[100],
           appBar: AppBar(
-            leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
             title: Text(
               'LangChat',
               style: GoogleFonts.sourceSansPro(
