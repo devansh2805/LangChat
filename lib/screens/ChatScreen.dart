@@ -68,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  TextStyle msgStyle = GoogleFonts.montserrat(
+  TextStyle msgStyle = GoogleFonts.quicksand(
       color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500);
 
   @override
@@ -111,6 +111,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             itemCount: snapshot.data.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot ds = snapshot.data.docs[index];
+                              if (ds.data()['read'] == false) {
+                                Database().seen(
+                                    chatRoomId, widget.userDetails['uid']);
+                              }
                               return Container(
                                 // message area
                                 margin: EdgeInsets.all(10),
@@ -246,7 +250,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                             : Alignment.centerLeft,
                                         color: Colors.white.withOpacity(0),
                                         child: Text(
-                                            DateFormat('dd MMM  HH:mm')
+                                            DateFormat(
+                                                    'dd MMM  HH:mm ${ds['senderUid'] == widget.userDetails['uid'] && ds['read'] == true ? 'seen' : ''}')
                                                 .format(
                                                     ds['timestamp'].toDate())
                                                 .toString(),
@@ -325,7 +330,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 DateTime.now(),
                                 widget.userDetails['uid'],
                                 chatRoomId,
-                                "text");
+                                "text",
+                                false);
                             _msgController.text = '';
                             setState(() {});
                           });

@@ -16,7 +16,7 @@ class Database {
 
   // send a message
   sendMessage(String origMessage, String transMessage, DateTime timestamp,
-      String senderUid, String chatRoomId, String msgType) async {
+      String senderUid, String chatRoomId, String msgType, bool read) async {
     return FirebaseFirestore.instance
         .collection('ChatRooms')
         .doc(chatRoomId)
@@ -26,7 +26,8 @@ class Database {
       'transMessage': transMessage,
       'timestamp': timestamp,
       'senderUid': senderUid,
-      'msgType': msgType
+      'msgType': msgType,
+      'read': read
     }).then((value) async {
       await FirebaseFirestore.instance
           .collection('ChatRooms')
@@ -39,6 +40,18 @@ class Database {
         'lastMsgType': msgType
       });
     });
+  }
+
+  seen(String chatRoomId, String uid) {
+    FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .collection('chats')
+        .where('senderUid', isNotEqualTo: uid)
+        .get()
+        .then((value) => value.docs.forEach((element) {
+              element.reference.update({'read': true});
+            }));
   }
 
   Future<void> updateProfilePic(String uid, String url) async {

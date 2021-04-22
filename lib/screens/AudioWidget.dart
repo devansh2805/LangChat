@@ -157,7 +157,8 @@ class _AudioWidgetState extends State<AudioWidget> {
                           DateTime.now(),
                           FirebaseAuth.instance.currentUser.uid,
                           _chatRoomId,
-                          "audio");
+                          "audio",
+                          false);
                       Navigator.pop(context);
                     },
                   ),

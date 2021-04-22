@@ -135,32 +135,36 @@ class _ChatsState extends State<Chats> {
                                       style: GoogleFonts.sourceSansPro(
                                           fontSize: 18)),
                                   subtitle: Text(
-                                    // if the last message was sent by user show the original msg
-                                    // else show translated msg
-                                    // we show only few snippets of the msg
-                                    ds.data()['lastMsgType'] == "audio"
-                                        ? "Audio 🔈"
-                                        : userDetails.data()['uid'] ==
-                                                ds.data()['sentBy']
-                                            ? (ds.data()['lastMsgOrig'].length >
-                                                    15
-                                                ? ds
-                                                        .data()['lastMsgOrig']
-                                                        .substring(0, 15) +
-                                                    '...'
-                                                : ds.data()['lastMsgOrig'])
-                                            : (ds
-                                                        .data()['lastMsgTrans']
-                                                        .length >
-                                                    15
-                                                ? ds
-                                                        .data()['lastMsgTrans']
-                                                        .substring(0, 15) +
-                                                    '...'
-                                                : ds.data()['lastMsgTrans']),
-                                    style:
-                                        GoogleFonts.sourceSansPro(fontSize: 16),
-                                  ),
+                                      // if the last message was sent by user show the original msg
+                                      // else show translated msg
+                                      // we show only few snippets of the msg
+                                      ds.data()['lastMsgType'] == "audio"
+                                          ? "Audio 🔈"
+                                          : userDetails.data()['uid'] ==
+                                                  ds.data()['sentBy']
+                                              ? (ds
+                                                          .data()['lastMsgOrig']
+                                                          .length >
+                                                      15
+                                                  ? ds
+                                                          .data()['lastMsgOrig']
+                                                          .substring(0, 15) +
+                                                      '...'
+                                                  : ds.data()['lastMsgOrig'])
+                                              : (ds
+                                                          .data()[
+                                                              'lastMsgTrans']
+                                                          .length >
+                                                      15
+                                                  ? ds
+                                                          .data()[
+                                                              'lastMsgTrans']
+                                                          .substring(0, 15) +
+                                                      '...'
+                                                  : ds.data()['lastMsgTrans']),
+                                      style: GoogleFonts.quicksand(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500)),
                                   trailing: IconButton(
                                     icon: Icon(Icons.delete),
                                     color: Colors.grey,
