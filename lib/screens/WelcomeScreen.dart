@@ -44,52 +44,54 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-            backgroundColor: Colors.indigo[100],
-            appBar: AppBar(
-              leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-              title: Text('LangChat',
-                  style: GoogleFonts.sourceSansPro(
-                      fontWeight: FontWeight.bold, fontSize: 22)),
-              actions: [
-                IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.exit_to_app),
-                    onPressed: () async {
-                      await Auth().signOut();
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    }),
-                IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.settings),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UpdateProfile()));
-                    })
-              ],
-              bottom: TabBar(
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                    child: Text('Chats',
-                        style: GoogleFonts.sourceSansPro(fontSize: 18)),
-                  ),
-                  Tab(
-                    child: Text('Contacts',
-                        style: GoogleFonts.sourceSansPro(fontSize: 18)),
-                  ),
-                ],
-              ),
+          backgroundColor: Colors.indigo[100],
+          appBar: AppBar(
+            title: Text(
+              'LangChat',
+              style: GoogleFonts.sourceSansPro(
+                  fontWeight: FontWeight.bold, fontSize: 22),
             ),
-            body: TabBarView(
+            actions: [
+              IconButton(
+                color: Colors.white,
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () async {
+                  await Auth().signOut();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+              ),
+              IconButton(
+                color: Colors.white,
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UpdateProfile()));
+                },
+              )
+            ],
+            bottom: TabBar(
               controller: _tabController,
-              children: [
-                chats.Chats(),
-                contacts.Contacts(),
+              tabs: [
+                Tab(
+                  child: Text('Chats',
+                      style: GoogleFonts.sourceSansPro(fontSize: 18)),
+                ),
+                Tab(
+                  child: Text('Contacts',
+                      style: GoogleFonts.sourceSansPro(fontSize: 18)),
+                ),
               ],
-            )),
+            ),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              chats.Chats(),
+              contacts.Contacts(),
+            ],
+          ),
+        ),
       ),
     );
   }

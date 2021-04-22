@@ -1,3 +1,4 @@
+// chat screen
 import 'package:LangChat/backend/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
