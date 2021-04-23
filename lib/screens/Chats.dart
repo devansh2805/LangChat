@@ -52,7 +52,8 @@ class _ChatsState extends State<Chats> {
     return intitials;
   }
 
-  Future<void> _showAlertDialog(context, dynamic snapshot, int index) async {
+  Future<void> _showAlertDialog(
+      context, dynamic snapshot, String chatRoomId) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -66,17 +67,35 @@ class _ChatsState extends State<Chats> {
             child: ListBody(
               children: <Widget>[
                 Text('Are you sure you want to delete this chat?.'),
+                SizedBox(height: 10),
+                loading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.indigo[500])))
+                    : SizedBox()
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
                 child: Text('Yes'),
-                onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .runTransaction((Transaction myTransaction) async {
-                    myTransaction.delete(snapshot.data.docs[index].reference);
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('ChatRooms')
+                      .doc(chatRoomId)
+                      .collection('chats')
+                      .snapshots()
+                      .forEach((element) {
+                    for (QueryDocumentSnapshot snapshot in element.docs) {
+                      snapshot.reference.delete();
+                    }
                   });
+                  FirebaseFirestore.instance
+                      .collection('ChatRooms')
+                      .doc(chatRoomId)
+                      .delete();
+
                   Navigator.pop(context);
                 }),
             TextButton(
@@ -165,14 +184,14 @@ class _ChatsState extends State<Chats> {
                                       style: GoogleFonts.quicksand(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500)),
-                                  // trailing: IconButton(
-                                  //   icon: Icon(Icons.delete),
-                                  //   color: Colors.grey,
-                                  //   onPressed: () async {
-                                  //     _showAlertDialog(
-                                  //         context, snapshot, index);
-                                  //   },
-                                  // ),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.grey,
+                                    onPressed: () async {
+                                      _showAlertDialog(
+                                          context, snapshot, ds.id);
+                                    },
+                                  ),
                                   onTap: () {
                                     Navigator.push(
                                         context,
@@ -189,9 +208,7 @@ class _ChatsState extends State<Chats> {
                           }
                         })
                     : Center(
-                        child: Center(
-                          child: Text('You have not chatted with anyone yet'),
-                        ),
+                        child: Text('You have not chatted with anyone yet'),
                       );
               }
             },
