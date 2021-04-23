@@ -165,14 +165,14 @@ class _ChatsState extends State<Chats> {
                                       style: GoogleFonts.quicksand(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500)),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.grey,
-                                    onPressed: () async {
-                                      _showAlertDialog(
-                                          context, snapshot, index);
-                                    },
-                                  ),
+                                  // trailing: IconButton(
+                                  //   icon: Icon(Icons.delete),
+                                  //   color: Colors.grey,
+                                  //   onPressed: () async {
+                                  //     _showAlertDialog(
+                                  //         context, snapshot, index);
+                                  //   },
+                                  // ),
                                   onTap: () {
                                     Navigator.push(
                                         context,
