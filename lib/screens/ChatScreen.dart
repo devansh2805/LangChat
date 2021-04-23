@@ -237,25 +237,24 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ),
                                     Container(
                                         width: ds['msgType'] == "text"
-                                            ? MediaQuery.of(context)
-                                                    .size
-                                                    .width *
+                                            ? MediaQuery.of(context).size.width *
                                                 0.6
-                                            : MediaQuery.of(context)
-                                                    .size
-                                                    .width *
+                                            : MediaQuery.of(context).size.width *
                                                 0.25,
-                                        alignment: ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? Alignment.centerRight
-                                            : Alignment.centerLeft,
+                                        alignment:
+                                            ds['senderUid'] == widget.userDetails['uid']
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
                                         color: Colors.white.withOpacity(0),
                                         child: Text(
-                                            DateFormat(
-                                                    'dd MMM  HH:mm ${ds['senderUid'] == widget.userDetails['uid'] && ds['read'] == true ? 'seen' : ''}')
-                                                .format(
-                                                    ds['timestamp'].toDate())
-                                                .toString(),
+                                            DateFormat('dd MMM  HH:mm')
+                                                    .format(ds['timestamp']
+                                                        .toDate())
+                                                    .toString() +
+                                                (ds['senderUid'] == widget.userDetails['uid'] &&
+                                                        ds['read']
+                                                    ? '  seen'
+                                                    : ''),
                                             style: GoogleFonts.montserrat(
                                                 fontStyle: FontStyle.italic,
                                                 color: Colors.black,
