@@ -100,13 +100,16 @@ class _ContactsState extends State<Contacts> {
                                     BorderRadius.all(Radius.circular(10))),
                             margin: EdgeInsets.all(6),
                             child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage: documentSnapshot
-                                              .data()["imageUrl"] ==
-                                          ""
-                                      ? AssetImage("assets/dummy.png")
-                                      : NetworkImage(
-                                          documentSnapshot.data()["imageUrl"]),
+                                leading: Hero(
+                                  tag: "profile",
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        documentSnapshot.data()["imageUrl"] ==
+                                                ""
+                                            ? AssetImage("assets/dummy.png")
+                                            : NetworkImage(documentSnapshot
+                                                .data()["imageUrl"]),
+                                  ),
                                 ),
                                 title: Text(documentSnapshot.data()['name'],
                                     style: GoogleFonts.sourceSansPro(
@@ -114,10 +117,6 @@ class _ContactsState extends State<Contacts> {
                                 subtitle: Text(
                                     documentSnapshot.data()['phoneNum'],
                                     style: GoogleFonts.sourceSansPro()),
-                                trailing: Icon(
-                                  Icons.check,
-                                  color: Color.fromRGBO(0, 20, 200, 0.4),
-                                ),
                                 onTap: () {
                                   var chatRoomId = getChatRoomId(
                                       userDetails.data()['uid'],

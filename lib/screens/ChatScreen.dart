@@ -80,14 +80,17 @@ class _ChatScreenState extends State<ChatScreen> {
             appBar: AppBar(
               leading: Container(
                 margin: EdgeInsets.all(8),
-                child: CircleAvatar(
-                  backgroundImage: receiverDetails.data()["imageUrl"] == ""
-                      ? AssetImage(
-                          "assets/dummy.png",
-                        )
-                      : NetworkImage(
-                          receiverDetails.data()["imageUrl"],
-                        ),
+                child: Hero(
+                  tag: "profile",
+                  child: CircleAvatar(
+                    backgroundImage: receiverDetails.data()["imageUrl"] == ""
+                        ? AssetImage(
+                            "assets/dummy.png",
+                          )
+                        : NetworkImage(
+                            receiverDetails.data()["imageUrl"],
+                          ),
+                  ),
                 ),
               ),
               title: Text(
@@ -237,28 +240,45 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ),
                                     Container(
                                         width: ds['msgType'] == "text"
-                                            ? MediaQuery.of(context).size.width *
+                                            ? MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.6
-                                            : MediaQuery.of(context).size.width *
+                                            : MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.25,
-                                        alignment:
-                                            ds['senderUid'] == widget.userDetails['uid']
-                                                ? Alignment.centerRight
-                                                : Alignment.centerLeft,
+                                        alignment: ds['senderUid'] ==
+                                                widget.userDetails['uid']
+                                            ? Alignment.centerRight
+                                            : Alignment.centerLeft,
                                         color: Colors.white.withOpacity(0),
-                                        child: Text(
-                                            DateFormat('dd MMM  HH:mm')
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                ds['senderUid'] ==
+                                                        widget
+                                                            .userDetails['uid']
+                                                    ? MainAxisAlignment.end
+                                                    : MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                DateFormat('dd MMM  HH:mm')
                                                     .format(ds['timestamp']
                                                         .toDate())
-                                                    .toString() +
-                                                (ds['senderUid'] == widget.userDetails['uid'] &&
-                                                        ds['read']
-                                                    ? '  seen'
-                                                    : ''),
-                                            style: GoogleFonts.montserrat(
-                                                fontStyle: FontStyle.italic,
-                                                color: Colors.black,
-                                                fontSize: 12)))
+                                                    .toString(),
+                                                style: GoogleFonts.openSans(
+                                                    color: Colors.black,
+                                                    fontSize: 12),
+                                              ),
+                                              SizedBox(width: 10),
+                                              (ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid'] &&
+                                                      ds['read'])
+                                                  ? Icon(Icons.done_all,
+                                                      color: Colors.blue)
+                                                  : SizedBox()
+                                            ]))
                                   ],
                                 ),
                               );
