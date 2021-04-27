@@ -127,6 +127,7 @@ class _ContactsState extends State<Contacts> {
                                     'lastMsgTrans': '',
                                     'timestamp': '',
                                     'sentBy': '',
+                                    'lastMsgSeen': false,
                                     'users': [
                                       userDetails.data()['name'],
                                       documentSnapshot.data()['name']

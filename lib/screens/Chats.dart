@@ -148,11 +148,10 @@ class _ChatsState extends State<Chats> {
                                       backgroundColor: Colors.black,
                                       child: Text(getInitials(name),
                                           style: GoogleFonts.sourceSansPro(
-                                            fontSize: 18,
-                                          ))),
+                                              fontSize: 18))),
                                   title: Text(name,
                                       style: GoogleFonts.sourceSansPro(
-                                          fontSize: 18)),
+                                          fontSize: 20)),
                                   subtitle: Text(
                                       // if the last message was sent by user show the original msg
                                       // else show translated msg
@@ -161,20 +160,13 @@ class _ChatsState extends State<Chats> {
                                           ? "Audio 🔈"
                                           : userDetails.data()['uid'] ==
                                                   ds.data()['sentBy']
-                                              ? (ds
-                                                          .data()['lastMsgOrig']
-                                                          .length >
-                                                      15
+                                              ? (ds.data()['lastMsgOrig'].length > 15
                                                   ? ds
                                                           .data()['lastMsgOrig']
                                                           .substring(0, 15) +
                                                       '...'
                                                   : ds.data()['lastMsgOrig'])
-                                              : (ds
-                                                          .data()[
-                                                              'lastMsgTrans']
-                                                          .length >
-                                                      15
+                                              : (ds.data()['lastMsgTrans'].length > 15
                                                   ? ds
                                                           .data()[
                                                               'lastMsgTrans']
@@ -183,7 +175,13 @@ class _ChatsState extends State<Chats> {
                                                   : ds.data()['lastMsgTrans']),
                                       style: GoogleFonts.quicksand(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500)),
+                                          fontWeight: FontWeight.w500,
+                                          color: (ds.data()['lastMsgSeen'] ==
+                                                      false &&
+                                                  ds.data()['senderUid'] !=
+                                                      userDetails.data()['uid'])
+                                              ? Colors.indigo
+                                              : Colors.grey)),
                                   trailing: IconButton(
                                     icon: Icon(Icons.delete),
                                     color: Colors.grey,

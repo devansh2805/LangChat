@@ -38,7 +38,8 @@ class Database {
         'lastMsgTrans': transMessage,
         'timestamp': timestamp,
         'sentBy': senderUid,
-        'lastMsgType': msgType
+        'lastMsgType': msgType,
+        'lastMsgSeen': false
       });
     });
   }
@@ -53,6 +54,10 @@ class Database {
         .then((value) => value.docs.forEach((element) {
               element.reference.update({'read': true});
             }));
+    FirebaseFirestore.instance
+        .collection('ChatRooms')
+        .doc(chatRoomId)
+        .update({'lastMsgSeen': true});
   }
 
   Future<void> updateProfilePic(String uid, String url) async {
