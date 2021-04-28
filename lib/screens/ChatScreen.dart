@@ -119,44 +119,60 @@ class _ChatScreenState extends State<ChatScreen> {
                                 Database().seen(
                                     chatRoomId, widget.userDetails['uid']);
                               }
-                              return Container(
-                                // message area
-                                margin: EdgeInsets.all(10),
-                                alignment:
-                                    ds['senderUid'] == widget.userDetails['uid']
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                width: MediaQuery.of(context).size.width - 10,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? Colors.indigo[400]
-                                            : Color(0xff7269ef),
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(15),
-                                          topRight: Radius.circular(15),
-                                        ),
-                                      ),
-                                      padding: EdgeInsets.all(5),
-                                      width: ds['msgType'] == "text"
-                                          ? MediaQuery.of(context).size.width *
-                                              0.6
-                                          : MediaQuery.of(context).size.width *
-                                              0.25,
-                                      child: ds['msgType'] == 'text'
-                                          ? Text(
-                                              ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? ds['origMessage']
-                                                  : ds['transMessage'],
-                                              style: msgStyle,
-                                            )
-                                          : Row(
-                                              children: [
-                                                MaterialButton(
+                              bool visible = false;
+
+                              return StatefulBuilder(builder:
+                                  (BuildContext context,
+                                      StateSetter setState1) {
+                                return Container(
+                                  // message area
+                                  margin: EdgeInsets.all(10),
+                                  alignment: ds['senderUid'] ==
+                                          widget.userDetails['uid']
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  width: MediaQuery.of(context).size.width - 10,
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          print(visible);
+
+                                          setState1(() => visible = !visible);
+                                          print(visible);
+                                        },
+                                        child: Container(
+                                          // first container
+                                          decoration: BoxDecoration(
+                                            color: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Colors.indigo[400]
+                                                : Color(0xff7269ef),
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(15),
+                                              topRight: Radius.circular(15),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(5),
+                                          width: ds['msgType'] == "text"
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                          child: ds['msgType'] == 'text'
+                                              ? Text(
+                                                  ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? ds['origMessage']
+                                                      : ds['transMessage'],
+                                                  style: msgStyle,
+                                                )
+                                              : MaterialButton(
                                                   animationDuration:
                                                       Duration(seconds: 1),
                                                   onPressed: () {
@@ -177,44 +193,49 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   ),
                                                   shape: CircleBorder(),
                                                 ),
-                                              ],
-                                            ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? Colors.indigo[300]
-                                            : Color(0xff9b95f5),
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: ds['senderUid'] ==
-                                                  widget.userDetails['uid']
-                                              ? Radius.circular(15)
-                                              : Radius.circular(0),
-                                          bottomRight: ds['senderUid'] ==
-                                                  widget.userDetails['uid']
-                                              ? Radius.circular(0)
-                                              : Radius.circular(15),
                                         ),
                                       ),
-                                      padding: EdgeInsets.all(5),
-                                      width: ds['msgType'] == "text"
-                                          ? MediaQuery.of(context).size.width *
-                                              0.6
-                                          : MediaQuery.of(context).size.width *
-                                              0.25,
-                                      alignment: Alignment.centerLeft,
-                                      child: ds['msgType'] == 'text'
-                                          ? Text(
-                                              ds['senderUid'] ==
+                                      Visibility(
+                                        visible: visible,
+                                        child: Container(
+                                          // second container
+                                          decoration: BoxDecoration(
+                                            color: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Colors.indigo[300]
+                                                : Color(0xff9b95f5),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: ds['senderUid'] ==
                                                       widget.userDetails['uid']
-                                                  ? ds['transMessage']
-                                                  : ds['origMessage'],
-                                              style: msgStyle,
-                                            )
-                                          : Row(
-                                              children: [
-                                                MaterialButton(
+                                                  ? Radius.circular(15)
+                                                  : Radius.circular(0),
+                                              bottomRight: ds['senderUid'] ==
+                                                      widget.userDetails['uid']
+                                                  ? Radius.circular(0)
+                                                  : Radius.circular(15),
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.all(5),
+                                          width: ds['msgType'] == "text"
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                          alignment: Alignment.centerLeft,
+                                          child: ds['msgType'] == 'text'
+                                              ? Text(
+                                                  ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? ds['transMessage']
+                                                      : ds['origMessage'],
+                                                  style: msgStyle,
+                                                )
+                                              : MaterialButton(
                                                   animationDuration:
                                                       Duration(seconds: 1),
                                                   onPressed: () {
@@ -235,53 +256,52 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   ),
                                                   shape: CircleBorder(),
                                                 ),
-                                              ],
-                                            ),
-                                    ),
-                                    Container(
-                                        width: ds['msgType'] == "text"
-                                            ? MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.6
-                                            : MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.25,
-                                        alignment: ds['senderUid'] ==
-                                                widget.userDetails['uid']
-                                            ? Alignment.centerRight
-                                            : Alignment.centerLeft,
-                                        color: Colors.white.withOpacity(0),
-                                        child: Row(
-                                            mainAxisAlignment:
-                                                ds['senderUid'] ==
-                                                        widget
-                                                            .userDetails['uid']
-                                                    ? MainAxisAlignment.end
-                                                    : MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                DateFormat('dd MMM  HH:mm')
-                                                    .format(ds['timestamp']
-                                                        .toDate())
-                                                    .toString(),
-                                                style: GoogleFonts.openSans(
-                                                    color: Colors.black,
-                                                    fontSize: 12),
-                                              ),
-                                              SizedBox(width: 10),
-                                              (ds['senderUid'] ==
-                                                          widget.userDetails[
-                                                              'uid'] &&
-                                                      ds['read'])
-                                                  ? Icon(Icons.done_all,
-                                                      color: Colors.blue)
-                                                  : SizedBox()
-                                            ]))
-                                  ],
-                                ),
-                              );
+                                        ),
+                                      ),
+                                      Container(
+                                          width: ds['msgType'] == "text"
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                          alignment: ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
+                                          color: Colors.white.withOpacity(0),
+                                          child: Row(
+                                              mainAxisAlignment: ds[
+                                                          'senderUid'] ==
+                                                      widget.userDetails['uid']
+                                                  ? MainAxisAlignment.end
+                                                  : MainAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  DateFormat('dd MMM  HH:mm')
+                                                      .format(ds['timestamp']
+                                                          .toDate())
+                                                      .toString(),
+                                                  style: GoogleFonts.openSans(
+                                                      color: Colors.black,
+                                                      fontSize: 12),
+                                                ),
+                                                SizedBox(width: 10),
+                                                (ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid'] &&
+                                                        ds['read'])
+                                                    ? Icon(Icons.done_all,
+                                                        color: Colors.blue)
+                                                    : SizedBox()
+                                              ]))
+                                    ],
+                                  ),
+                                );
+                              });
                             });
                       } else {
                         return Container();
