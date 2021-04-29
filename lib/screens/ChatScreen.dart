@@ -134,12 +134,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                   width: MediaQuery.of(context).size.width - 10,
                                   child: Column(
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          print(visible);
-
+                                      InkWell(
+                                        onLongPress: () {
                                           setState1(() => visible = !visible);
-                                          print(visible);
                                         },
                                         child: Container(
                                           // first container
@@ -162,7 +159,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.35,
+                                                  0.25,
                                           child: ds['msgType'] == 'text'
                                               ? Text(
                                                   ds['senderUid'] ==
@@ -224,7 +221,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.35,
+                                                  0.25,
                                           alignment: Alignment.centerLeft,
                                           child: ds['msgType'] == 'text'
                                               ? Text(
@@ -267,7 +264,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.35,
+                                                  0.25,
                                           alignment: ds['senderUid'] ==
                                                   widget.userDetails['uid']
                                               ? Alignment.centerRight
