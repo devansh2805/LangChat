@@ -69,8 +69,10 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
-  TextStyle msgStyle = GoogleFonts.quicksand(
-      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500);
+  TextStyle msgStyle(Color color) {
+    return GoogleFonts.quicksand(
+        color: color, fontSize: 16, fontWeight: FontWeight.w500);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,8 +145,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                           decoration: BoxDecoration(
                                             color: ds['senderUid'] ==
                                                     widget.userDetails['uid']
-                                                ? Colors.indigo[400]
-                                                : Color(0xff7269ef),
+                                                ? Color(0xfff5f5f5)
+                                                : Colors.indigo[400],
+                                            // Color(0xff7269ef),
                                             borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(15),
                                               topRight: Radius.circular(15),
@@ -167,7 +170,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                                               'uid']
                                                       ? ds['origMessage']
                                                       : ds['transMessage'],
-                                                  style: msgStyle,
+                                                  style: msgStyle(ds[
+                                                              'senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? Colors.black
+                                                      : Colors.white),
                                                 )
                                               : MaterialButton(
                                                   animationDuration:
@@ -199,18 +207,19 @@ class _ChatScreenState extends State<ChatScreen> {
                                           decoration: BoxDecoration(
                                             color: ds['senderUid'] ==
                                                     widget.userDetails['uid']
-                                                ? Colors.indigo[300]
-                                                : Color(0xff9b95f5),
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(15)
-                                                  : Radius.circular(0),
-                                              bottomRight: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(0)
-                                                  : Radius.circular(15),
-                                            ),
+                                                ? Colors.white
+                                                : Colors.indigo[300],
+                                            // Color(0xff9b95f5),
+                                            // borderRadius: BorderRadius.only(
+                                            //   bottomLeft: ds['senderUid'] ==
+                                            //           widget.userDetails['uid']
+                                            //       ? Radius.circular(15)
+                                            //       : Radius.circular(0),
+                                            //   bottomRight: ds['senderUid'] ==
+                                            //           widget.userDetails['uid']
+                                            //       ? Radius.circular(0)
+                                            //       : Radius.circular(15),
+                                            // ),
                                           ),
                                           padding: EdgeInsets.all(5),
                                           width: ds['msgType'] == "text"
@@ -230,7 +239,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                                               'uid']
                                                       ? ds['transMessage']
                                                       : ds['origMessage'],
-                                                  style: msgStyle,
+                                                  style: msgStyle(ds[
+                                                              'senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? Colors.black
+                                                      : Colors.white),
                                                 )
                                               : MaterialButton(
                                                   animationDuration:
@@ -256,6 +270,28 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ),
                                       ),
                                       Container(
+                                          // time
+                                          decoration: BoxDecoration(
+                                            color: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? visible
+                                                    ? Colors.white
+                                                    : Color(0xfff5f5f5)
+                                                : visible
+                                                    ? Colors.indigo[300]
+                                                    : Colors.indigo[400],
+                                            // Color(0xff9b95f5),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: ds['senderUid'] ==
+                                                      widget.userDetails['uid']
+                                                  ? Radius.circular(15)
+                                                  : Radius.circular(0),
+                                              bottomRight: ds['senderUid'] ==
+                                                      widget.userDetails['uid']
+                                                  ? Radius.circular(0)
+                                                  : Radius.circular(15),
+                                            ),
+                                          ),
                                           width: ds['msgType'] == "text"
                                               ? MediaQuery.of(context)
                                                       .size
@@ -269,7 +305,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   widget.userDetails['uid']
                                               ? Alignment.centerRight
                                               : Alignment.centerLeft,
-                                          color: Colors.white.withOpacity(0),
+                                          // color: Colors.white.withOpacity(0),
                                           child: Row(
                                               mainAxisAlignment: ds[
                                                           'senderUid'] ==
@@ -283,7 +319,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                           .toDate())
                                                       .toString(),
                                                   style: GoogleFonts.openSans(
-                                                      color: Colors.black,
+                                                      color: ds['senderUid'] ==
+                                                              widget.userDetails[
+                                                                  'uid']
+                                                          ? Colors.black
+                                                          : Colors.white,
                                                       fontSize: 12),
                                                 ),
                                                 SizedBox(width: 10),

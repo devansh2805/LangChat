@@ -44,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          backgroundColor: Colors.indigo[100],
+          backgroundColor: Colors.indigo[50],
           appBar: AppBar(
             title: Text(
               'LangChat',

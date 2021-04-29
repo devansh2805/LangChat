@@ -93,6 +93,7 @@ class _ContactsState extends State<Contacts> {
                             snapshot.data.docs[index];
                         if (isInPhoneContacts(
                             documentSnapshot.data()["phoneNum"])) {
+                          print(documentSnapshot.data()["imageUrl"]);
                           return Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -103,6 +104,7 @@ class _ContactsState extends State<Contacts> {
                                 leading: Hero(
                                   tag: "profile",
                                   child: CircleAvatar(
+                                    radius: 25,
                                     backgroundImage:
                                         documentSnapshot.data()["imageUrl"] ==
                                                 ""

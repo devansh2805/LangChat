@@ -146,6 +146,7 @@ class _ChatsState extends State<Chats> {
                               child: ListTile(
                                   leading: CircleAvatar(
                                       backgroundColor: Colors.black,
+                                      radius: 25,
                                       child: Text(getInitials(name),
                                           style: GoogleFonts.sourceSansPro(
                                               fontSize: 18))),
