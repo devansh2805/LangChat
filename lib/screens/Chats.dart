@@ -52,62 +52,62 @@ class _ChatsState extends State<Chats> {
     return intitials;
   }
 
-  Future<void> _showAlertDialog(
-      context, dynamic snapshot, String chatRoomId) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Alert',
-            style: GoogleFonts.sourceSansPro(),
-          ),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Are you sure you want to delete this chat?.'),
-                SizedBox(height: 10),
-                loading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                                Colors.indigo[500])))
-                    : SizedBox()
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-                child: Text('Yes'),
-                onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('ChatRooms')
-                      .doc(chatRoomId)
-                      .collection('chats')
-                      .snapshots()
-                      .forEach((element) {
-                    for (QueryDocumentSnapshot snapshot in element.docs) {
-                      snapshot.reference.delete();
-                    }
-                  });
-                  FirebaseFirestore.instance
-                      .collection('ChatRooms')
-                      .doc(chatRoomId)
-                      .delete();
+  // Future<void> _showAlertDialog(
+  //     context, dynamic snapshot, String chatRoomId) async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text(
+  //           'Alert',
+  //           style: GoogleFonts.sourceSansPro(),
+  //         ),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: <Widget>[
+  //               Text('Are you sure you want to delete this chat?.'),
+  //               SizedBox(height: 10),
+  //               loading
+  //                   ? Center(
+  //                       child: CircularProgressIndicator(
+  //                           valueColor: AlwaysStoppedAnimation<Color>(
+  //                               Colors.indigo[500])))
+  //                   : SizedBox()
+  //             ],
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //               child: Text('Yes'),
+  //               onPressed: () {
+  //                 FirebaseFirestore.instance
+  //                     .collection('ChatRooms')
+  //                     .doc(chatRoomId)
+  //                     .collection('chats')
+  //                     .snapshots()
+  //                     .forEach((element) {
+  //                   for (QueryDocumentSnapshot snapshot in element.docs) {
+  //                     snapshot.reference.delete();
+  //                   }
+  //                 });
+  //                 FirebaseFirestore.instance
+  //                     .collection('ChatRooms')
+  //                     .doc(chatRoomId)
+  //                     .delete();
 
-                  Navigator.pop(context);
-                }),
-            TextButton(
-                child: Text('No'),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-          ],
-        );
-      },
-    );
-  }
+  //                 Navigator.pop(context);
+  //               }),
+  //           TextButton(
+  //               child: Text('No'),
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               }),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget build(BuildContext context) {
     return !loading
@@ -144,68 +144,80 @@ class _ChatsState extends State<Chats> {
                                       BorderRadius.all(Radius.circular(10))),
                               margin: EdgeInsets.all(6),
                               child: ListTile(
-                                  leading: CircleAvatar(
-                                      backgroundColor: Colors.black,
-                                      radius: 25,
-                                      child: Text(getInitials(name),
-                                          style: GoogleFonts.sourceSansPro(
-                                              fontSize: 18))),
-                                  title: Text(name,
-                                      style: GoogleFonts.sourceSansPro(
-                                          fontSize: 20)),
-                                  subtitle: Text(
-                                      // if the last message was sent by user show the original msg
-                                      // else show translated msg
-                                      // we show only few snippets of the msg
-                                      ds.data()['lastMsgType'] == "audio"
-                                          ? "Audio 🔈"
-                                          : userDetails.data()['uid'] ==
-                                                  ds.data()['sentBy']
-                                              ? (ds.data()['lastMsgOrig'].length > 15
-                                                  ? ds
-                                                          .data()['lastMsgOrig']
-                                                          .substring(0, 15) +
-                                                      '...'
-                                                  : ds.data()['lastMsgOrig'])
-                                              : (ds.data()['lastMsgTrans'].length > 15
-                                                  ? ds
-                                                          .data()[
-                                                              'lastMsgTrans']
-                                                          .substring(0, 15) +
-                                                      '...'
-                                                  : ds.data()['lastMsgTrans']),
-                                      style: GoogleFonts.quicksand(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: (ds.data()['lastMsgSeen'] ==
-                                                      false &&
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 25,
+                                  child: Text(
+                                    getInitials(name),
+                                    style:
+                                        GoogleFonts.sourceSansPro(fontSize: 18),
+                                  ),
+                                ),
+                                title: Text(
+                                  name,
+                                  style:
+                                      GoogleFonts.sourceSansPro(fontSize: 20),
+                                ),
+                                subtitle: Text(
+                                  // if the last message was sent by user show the original msg
+                                  // else show translated msg
+                                  // we show only few snippets of the msg
+                                  ds.data()['lastMsgType'] == "audio"
+                                      ? "Audio 🔈"
+                                      : userDetails.data()['uid'] ==
+                                              ds.data()['sentBy']
+                                          ? (ds.data()['lastMsgOrig'].length >
+                                                  15
+                                              ? ds
+                                                      .data()['lastMsgOrig']
+                                                      .substring(0, 15) +
+                                                  '...'
+                                              : ds.data()['lastMsgOrig'])
+                                          : (ds.data()['lastMsgTrans'].length >
+                                                  15
+                                              ? ds
+                                                      .data()['lastMsgTrans']
+                                                      .substring(0, 15) +
+                                                  '...'
+                                              : ds.data()['lastMsgTrans']),
+                                  style: GoogleFonts.quicksand(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color:
+                                          (ds.data()['lastMsgSeen'] == false &&
                                                   ds.data()['senderUid'] !=
                                                       userDetails.data()['uid'])
                                               ? Colors.indigo
-                                              : Colors.grey)),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.grey,
-                                    onPressed: () async {
-                                      _showAlertDialog(
-                                          context, snapshot, ds.id);
-                                    },
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatScreen({
-                                                  'uid':
-                                                      userDetails.data()['uid'],
-                                                  'langPref': userDetails
-                                                      .data()['langPref'],
-                                                  'receiverUid': uid
-                                                })));
-                                  }),
+                                              : Colors.grey),
+                                ),
+                                // trailing: IconButton(
+                                //   icon: Icon(Icons.delete),
+                                //   color: Colors.grey,
+                                //   onPressed: () async {
+                                //     _showAlertDialog(
+                                //         context, snapshot, ds.id);
+                                //   },
+                                // ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChatScreen(
+                                        {
+                                          'uid': userDetails.data()['uid'],
+                                          'langPref':
+                                              userDetails.data()['langPref'],
+                                          'receiverUid': uid
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             );
                           }
-                        })
+                        },
+                      )
                     : Center(
                         child: Text('You have not chatted with anyone yet'),
                       );
@@ -214,7 +226,8 @@ class _ChatsState extends State<Chats> {
           )
         : Center(
             child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
-          ));
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
+            ),
+          );
   }
 }
