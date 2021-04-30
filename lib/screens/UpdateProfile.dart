@@ -50,136 +50,128 @@ class _UpdateProfileState extends State<UpdateProfile> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return Stack(children: [
-      Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
         ),
-        body: !loading
-            ? Center(
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: profilePicUrl == ""
-                              ? AssetImage("assets/dummy.png")
-                              : NetworkImage(profilePicUrl),
-                          radius: width * 0.2,
-                        ),
-                        Positioned(
-                          child: MaterialButton(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) =>
-                                    bottomSheet(context, profilePicUrl)),
-                              );
-                            },
-                            color: Colors.indigo[400],
-                            textColor: Colors.white,
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 24,
-                            ),
-                            shape: CircleBorder(),
-                          ),
-                          top: width * 0.25,
-                          left: width * 0.25,
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 15),
-                    Text(userDetails.data()['name'],
-                        style: GoogleFonts.sourceSansPro(
-                            fontSize: 22,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700)),
-                    SizedBox(height: 45),
-                    Text(
-                      "Change your preferred language",
-                      style: GoogleFonts.sourceSansPro(
-                        color: Colors.grey[600],
-                        fontSize: 18,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    DropdownButton<String>(
-                      value: prefLang,
-                      icon: Icon(Icons.keyboard_arrow_down),
-                      iconSize: 24,
-                      style: GoogleFonts.sourceSansPro(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.grey,
-                      ),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          prefLang = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'English',
-                        'French',
-                        'Gujarati',
-                        'German',
-                        'Hindi',
-                        'Spanish'
-                      ].map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Container(
-                            child: Text(
-                              value,
-                              style: GoogleFonts.sourceSansPro(),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 50),
-                    TextButton(
-                      onPressed: () async {
-                        await Database()
-                            .changeLangPref(uid, langCodes[prefLang]);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("Language preference updated"),
-                          ),
-                        );
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.indigo[400]),
-                      ),
-                      child: Text(
-                        "SAVE",
-                        style: GoogleFonts.sourceSansPro(
-                            color: Colors.white, fontSize: 20),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : Center(
-                child: CircularProgressIndicator(),
-              ),
+        backgroundColor: Colors.white,
       ),
-      Positioned(
-        child: Image.asset("assets/bg.png"),
-        bottom: 0,
-        right: 0,
-      )
-    ]);
+      body: !loading
+          ? Center(
+              child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: profilePicUrl == ""
+                            ? AssetImage("assets/dummy.png")
+                            : NetworkImage(profilePicUrl),
+                        radius: width * 0.2,
+                      ),
+                      Positioned(
+                        child: MaterialButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: ((builder) =>
+                                  bottomSheet(context, profilePicUrl)),
+                            );
+                          },
+                          color: Colors.indigo[400],
+                          textColor: Colors.white,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 24,
+                          ),
+                          shape: CircleBorder(),
+                        ),
+                        top: width * 0.25,
+                        left: width * 0.25,
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Text(userDetails.data()['name'],
+                      style: GoogleFonts.sourceSansPro(
+                          fontSize: 22,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700)),
+                  SizedBox(height: 45),
+                  Text(
+                    "Change your preferred language",
+                    style: GoogleFonts.sourceSansPro(
+                      color: Colors.grey[600],
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButton<String>(
+                    value: prefLang,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    iconSize: 24,
+                    style: GoogleFonts.sourceSansPro(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.grey,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        prefLang = newValue;
+                      });
+                    },
+                    items: <String>[
+                      'English',
+                      'French',
+                      'Gujarati',
+                      'German',
+                      'Hindi',
+                      'Spanish'
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Container(
+                          child: Text(
+                            value,
+                            style: GoogleFonts.sourceSansPro(),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  SizedBox(height: 50),
+                  TextButton(
+                    onPressed: () async {
+                      await Database().changeLangPref(uid, langCodes[prefLang]);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Language preference updated"),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.indigo[400]),
+                    ),
+                    child: Text(
+                      "SAVE",
+                      style: GoogleFonts.sourceSansPro(
+                          color: Colors.white, fontSize: 20),
+                    ),
+                  )
+                ],
+              ),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
   }
 
   uploadImage() async {
