@@ -10,15 +10,20 @@ import 'package:translator/translator.dart';
 // ignore: must_be_immutable
 class AudioWidget extends StatefulWidget {
   String receiverLanguage;
+  String senderLanguage;
   String roomId;
+  Map<String, String> languageMap;
 
-  AudioWidget(String language, String chatRoomID) {
-    receiverLanguage = language;
+  AudioWidget(String senderlanguage, String receiverlanguage, String chatRoomID,
+      Map<String, String> languages) {
+    senderLanguage = senderlanguage;
+    receiverLanguage = receiverlanguage;
     roomId = chatRoomID;
+    languageMap = languages;
   }
   @override
   State<StatefulWidget> createState() =>
-      _AudioWidgetState(receiverLanguage, roomId);
+      _AudioWidgetState(senderLanguage, receiverLanguage, roomId, languageMap);
 }
 
 class _AudioWidgetState extends State<AudioWidget> {
@@ -32,14 +37,19 @@ class _AudioWidgetState extends State<AudioWidget> {
   String _listeningString = "";
   String _translatedtext = "";
   String _receiverLanguage = "";
+  String _senderLanguage = "";
   String _chatRoomId = "";
   SpeechToText _speechToText;
   FlutterTts _flutterTts;
   final GoogleTranslator _googleTranslator = GoogleTranslator();
+  Map<String, String> _languageMap;
 
-  _AudioWidgetState(String receiverLanguage, String chatRoomId) {
+  _AudioWidgetState(String senderLanguage, String receiverLanguage,
+      String chatRoomId, Map<String, String> languageMapping) {
+    _senderLanguage = senderLanguage;
     _receiverLanguage = receiverLanguage;
     _chatRoomId = chatRoomId;
+    _languageMap = languageMapping;
   }
 
   @override
@@ -115,7 +125,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                   Text("Original Audio"),
                   IconButton(
                     onPressed: () {
-                      _textToSpeech(_listeningString);
+                      _textToSpeech(_listeningString, _senderLanguage);
                     },
                     icon: Icon(
                       Icons.play_arrow,
@@ -133,7 +143,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                   Text("Translated Audio"),
                   IconButton(
                     onPressed: () {
-                      _textToSpeech(_translatedtext);
+                      _textToSpeech(_translatedtext, _receiverLanguage);
                     },
                     icon: Icon(
                       Icons.play_arrow,
@@ -221,7 +231,9 @@ class _AudioWidgetState extends State<AudioWidget> {
     }
   }
 
-  void _textToSpeech(String text) async {
+  void _textToSpeech(String text, String language) async {
+    language = _languageMap[language];
+    await _flutterTts.setLanguage(language);
     await _flutterTts.speak(text);
   }
 }

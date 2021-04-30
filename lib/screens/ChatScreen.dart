@@ -25,6 +25,14 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _msgController = new TextEditingController();
   final translator = GoogleTranslator();
   FlutterTts _flutterTts;
+  Map<String, String> languageMap = {
+    'en': 'en-US',
+    'es': 'es-ES',
+    'gu': 'gu-IN',
+    'de': 'de-DE',
+    'hi': 'hi-IN',
+    'fr': 'fr-FR',
+  };
 
   String getInitials(String name) {
     String intitials = '';
@@ -51,7 +59,6 @@ class _ChatScreenState extends State<ChatScreen> {
     chats = Database().fetchMessagesFromDatabase(chatRoomId);
     receiverDetails =
         await Database().getUserDetails(widget.userDetails['receiverUid']);
-
     loading = false;
     setState(() {});
   }
@@ -72,6 +79,12 @@ class _ChatScreenState extends State<ChatScreen> {
   TextStyle msgStyle(Color color) {
     return GoogleFonts.quicksand(
         color: color, fontSize: 16, fontWeight: FontWeight.w500);
+  }
+
+  void _textToSpeech(String text, String language) async {
+    language = languageMap[language];
+    await _flutterTts.setLanguage(language);
+    await _flutterTts.speak(text);
   }
 
   @override
@@ -190,10 +203,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                                       ds['senderUid'] ==
                                                               widget.userDetails[
                                                                   'uid']
-                                                          ? _flutterTts.speak(
-                                                              ds['origMessage'])
-                                                          : _flutterTts.speak(ds[
-                                                              'transMessage']);
+                                                          ? _textToSpeech(
+                                                              ds['origMessage'],
+                                                              widget.userDetails[
+                                                                  'langPref'])
+                                                          : _textToSpeech(
+                                                              ds[
+                                                                  'transMessage'],
+                                                              receiverDetails
+                                                                      .data()[
+                                                                  'langPref']);
                                                     },
                                                     color: Colors.indigo[50],
                                                     textColor: Colors.grey,
@@ -262,10 +281,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                                       ds['senderUid'] ==
                                                               widget.userDetails[
                                                                   'uid']
-                                                          ? _flutterTts.speak(ds[
-                                                              'transMessage'])
-                                                          : _flutterTts.speak(
-                                                              ds['origMessage']);
+                                                          ? _textToSpeech(
+                                                              ds[
+                                                                  'transMessage'],
+                                                              receiverDetails
+                                                                      .data()[
+                                                                  'langPref'])
+                                                          : _textToSpeech(
+                                                              ds['origMessage'],
+                                                              widget.userDetails[
+                                                                  'langPref']);
                                                     },
                                                     color: Colors.indigo[50],
                                                     textColor: Colors.grey,
@@ -394,8 +419,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                 barrierDismissible: true,
                                 builder: (context) {
                                   return AudioWidget(
+                                      widget.userDetails['langPref'],
                                       receiverDetails.data()['langPref'],
-                                      chatRoomId);
+                                      chatRoomId,
+                                      languageMap);
                                 });
                           } else {
                             Permission.microphone.request();
