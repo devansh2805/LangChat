@@ -17,6 +17,7 @@ class LoginPageState extends State<LoginPage> {
   final TextEditingController _phoneController = TextEditingController();
 
   String countryCode;
+  bool clicked = false;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -27,6 +28,7 @@ class LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new IntlPhoneField(
+              maxLength: 10,
               controller: _phoneController,
               decoration: new InputDecoration(
                 labelText: "Mobile Number",
@@ -47,19 +49,33 @@ class LoginPageState extends State<LoginPage> {
               height: 16,
             ),
             new TextButton(
-              onPressed: () {
+              onPressed: () async {
                 final phoneNumber = countryCode + _phoneController.text.trim();
-                Auth().loginUser(phoneNumber, context);
+                setState(() => clicked = true);
+                await Auth().loginUser(phoneNumber, context);
               },
               child: Text(
                 'Login',
-                style: GoogleFonts.sourceSansPro(color: Colors.white),
+                style: GoogleFonts.sourceSansPro(
+                    color: Colors.white, fontSize: 20),
               ),
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.indigo[400]),
               ),
-            )
+            ),
+            SizedBox(height: 10),
+            clicked
+                ? Column(
+                    children: [
+                      Center(
+                          child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.indigo[500]))),
+                      Text("please wait...")
+                    ],
+                  )
+                : Container()
           ],
         ),
       ),

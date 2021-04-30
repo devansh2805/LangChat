@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
   // check whether the phone number is already registered
-  userAlreadyRegistered(String phoneNum) async {
+  Future<bool> userAlreadyRegistered(String phoneNum) async {
     QuerySnapshot user = await FirebaseFirestore.instance
         .collection('users')
         .where('phoneNum', isEqualTo: phoneNum)

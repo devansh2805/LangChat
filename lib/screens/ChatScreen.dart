@@ -155,6 +155,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 topRight: Radius.circular(15),
                                               ),
                                             ),
+                                            alignment: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
                                             padding: EdgeInsets.all(5),
                                             width: ds['msgType'] == "text"
                                                 ? MediaQuery.of(context)
@@ -164,7 +168,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 : MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.25,
+                                                    0.35,
                                             child: ds['msgType'] == 'text'
                                                 ? Text(
                                                     ds['senderUid'] ==
@@ -232,8 +236,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 : MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.25,
-                                            alignment: Alignment.centerLeft,
+                                                    0.35,
+                                            alignment: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Alignment.centerRight
+                                                : Alignment.centerLeft,
                                             child: ds['msgType'] == 'text'
                                                 ? Text(
                                                     ds['senderUid'] ==
@@ -302,22 +309,22 @@ class _ChatScreenState extends State<ChatScreen> {
                                               : MediaQuery.of(context)
                                                       .size
                                                       .width *
-                                                  0.25,
+                                                  0.35,
                                           alignment: ds['senderUid'] ==
                                                   widget.userDetails['uid']
                                               ? Alignment.centerRight
                                               : Alignment.centerLeft,
                                           // color: Colors.white.withOpacity(0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                ds['senderUid'] ==
-                                                        widget
-                                                            .userDetails['uid']
-                                                    ? MainAxisAlignment.end
-                                                    : MainAxisAlignment.start,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Row(
+                                              mainAxisAlignment: ds[
+                                                          'senderUid'] ==
+                                                      widget.userDetails['uid']
+                                                  ? MainAxisAlignment.end
+                                                  : MainAxisAlignment.start,
+                                              children: [
+                                                Text(
                                                   DateFormat('dd MMM  HH:mm')
                                                       .format(ds['timestamp']
                                                           .toDate())
@@ -330,16 +337,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                                           : Colors.white,
                                                       fontSize: 12),
                                                 ),
-                                              ),
-                                              SizedBox(width: 10),
-                                              (ds['senderUid'] ==
-                                                          widget.userDetails[
-                                                              'uid'] &&
-                                                      ds['read'])
-                                                  ? Icon(Icons.done_all,
-                                                      color: Colors.blue)
-                                                  : SizedBox()
-                                            ],
+                                                SizedBox(width: 10),
+                                                (ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid'] &&
+                                                        ds['read'])
+                                                    ? Icon(Icons.done_all,
+                                                        color: Colors.blue)
+                                                    : SizedBox()
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -378,7 +385,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.mic,
-                          color: Colors.green,
+                          color: Colors.red,
                         ),
                         onPressed: () async {
                           if (await Permission.microphone.isGranted) {
