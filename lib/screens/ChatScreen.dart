@@ -49,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
     chatRoomId = getChatRoomId(
         widget.userDetails['uid'], widget.userDetails['receiverUid']);
     chats = Database().fetchMessagesFromDatabase(chatRoomId);
+
     receiverDetails =
         await Database().getUserDetails(widget.userDetails['receiverUid']);
 

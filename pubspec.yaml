@@ -39,6 +39,11 @@ dependencies:
   permission_handler: ^6.1.1
   translator: ^0.1.5
   speech_to_text: ^2.7.0
+  flutter_launcher_icons: ^0.9.0
+
+flutter_icons:
+  image_path: "assets/appLogo.png"
+  android: true
 
 dev_dependencies:
   flutter_test:
