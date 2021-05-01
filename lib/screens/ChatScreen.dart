@@ -85,6 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _textToSpeech(String text, String language) async {
     language = languageMap[language];
     await _flutterTts.setLanguage(language);
+    await _flutterTts.setSpeechRate(1.0);
     await _flutterTts.speak(text);
   }
 

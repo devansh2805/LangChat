@@ -234,6 +234,7 @@ class _AudioWidgetState extends State<AudioWidget> {
   void _textToSpeech(String text, String language) async {
     language = _languageMap[language];
     await _flutterTts.setLanguage(language);
+    await _flutterTts.setSpeechRate(1.0);
     await _flutterTts.speak(text);
   }
 }
