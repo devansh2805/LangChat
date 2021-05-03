@@ -2,12 +2,12 @@
 
 
 <div>
-<p align="center"><img src="./assets/chatlogoReadme.png" height="150px"></p>
+<p align="center"><img src="./assets/chatlogoreadme.png" height="150px"></p>
 </div>
 
-LangChat is very similar to regular chat application, wherein users communicate with each other using messages and calls over the internet. What langChat brings in new is the idea of removing language barriers in such a communication system.
+LangChat is very similar to regular chat application, wherein users communicate with each other using messages over the internet. What langChat brings in new is the idea of removing language barriers in such a communication system.
 
-LangChat automatically translates messages and calls made by the other user in some language to the language set by user himself. 
+LangChat automatically translates messages (text and audio) made by the other user in some language to the language set by user himself. 
 
 Since variety of languages and nuances exist in the world, language barrier in communication does exist, LangChat is developed to remove this barrier.
 
