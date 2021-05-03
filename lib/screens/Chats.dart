@@ -52,63 +52,6 @@ class _ChatsState extends State<Chats> {
     return intitials;
   }
 
-  // Future<void> _showAlertDialog(
-  //     context, dynamic snapshot, String chatRoomId) async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text(
-  //           'Alert',
-  //           style: GoogleFonts.sourceSansPro(),
-  //         ),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               Text('Are you sure you want to delete this chat?.'),
-  //               SizedBox(height: 10),
-  //               loading
-  //                   ? Center(
-  //                       child: CircularProgressIndicator(
-  //                           valueColor: AlwaysStoppedAnimation<Color>(
-  //                               Colors.indigo[500])))
-  //                   : SizedBox()
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //               child: Text('Yes'),
-  //               onPressed: () {
-  //                 FirebaseFirestore.instance
-  //                     .collection('ChatRooms')
-  //                     .doc(chatRoomId)
-  //                     .collection('chats')
-  //                     .snapshots()
-  //                     .forEach((element) {
-  //                   for (QueryDocumentSnapshot snapshot in element.docs) {
-  //                     snapshot.reference.delete();
-  //                   }
-  //                 });
-  //                 FirebaseFirestore.instance
-  //                     .collection('ChatRooms')
-  //                     .doc(chatRoomId)
-  //                     .delete();
-
-  //                 Navigator.pop(context);
-  //               }),
-  //           TextButton(
-  //               child: Text('No'),
-  //               onPressed: () {
-  //                 Navigator.pop(context);
-  //               }),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget build(BuildContext context) {
     return !loading
         ? StreamBuilder(
@@ -116,9 +59,11 @@ class _ChatsState extends State<Chats> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
-                    child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
-                ));
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.indigo[500]),
+                  ),
+                );
               } else {
                 return (snapshot.hasData)
                     ? ListView.builder(
@@ -139,9 +84,11 @@ class _ChatsState extends State<Chats> {
                                 : ds.data()['userIds'][0];
                             return Container(
                               decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
                               margin: EdgeInsets.all(6),
                               child: ListTile(
                                 leading: CircleAvatar(
@@ -149,14 +96,16 @@ class _ChatsState extends State<Chats> {
                                   radius: 25,
                                   child: Text(
                                     getInitials(name),
-                                    style:
-                                        GoogleFonts.sourceSansPro(fontSize: 18),
+                                    style: GoogleFonts.sourceSansPro(
+                                      fontSize: 18,
+                                    ),
                                   ),
                                 ),
                                 title: Text(
                                   name,
-                                  style:
-                                      GoogleFonts.sourceSansPro(fontSize: 20),
+                                  style: GoogleFonts.sourceSansPro(
+                                    fontSize: 20,
+                                  ),
                                 ),
                                 subtitle: Text(
                                   // if the last message was sent by user show the original msg
@@ -181,23 +130,15 @@ class _ChatsState extends State<Chats> {
                                                   '...'
                                               : ds.data()['lastMsgTrans']),
                                   style: GoogleFonts.quicksand(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color:
-                                          (ds.data()['lastMsgSeen'] == false &&
-                                                  ds.data()['senderUid'] !=
-                                                      userDetails.data()['uid'])
-                                              ? Colors.indigo
-                                              : Colors.grey),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: (ds.data()['lastMsgSeen'] == false &&
+                                            ds.data()['senderUid'] !=
+                                                userDetails.data()['uid'])
+                                        ? Colors.indigo
+                                        : Colors.grey,
+                                  ),
                                 ),
-                                // trailing: IconButton(
-                                //   icon: Icon(Icons.delete),
-                                //   color: Colors.grey,
-                                //   onPressed: () async {
-                                //     _showAlertDialog(
-                                //         context, snapshot, ds.id);
-                                //   },
-                                // ),
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -219,7 +160,9 @@ class _ChatsState extends State<Chats> {
                         },
                       )
                     : Center(
-                        child: Text('You have not chatted with anyone yet'),
+                        child: Text(
+                          'You have not chatted with anyone yet',
+                        ),
                       );
               }
             },

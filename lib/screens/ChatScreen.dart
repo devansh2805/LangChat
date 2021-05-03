@@ -122,212 +122,131 @@ class _ChatScreenState extends State<ChatScreen> {
             body: ListView(
               children: [
                 Container(
-                    // Chat area
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    width: MediaQuery.of(context).size.width - 10,
-                    child: StreamBuilder(
-                      stream: chats,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot ds = snapshot.data.docs[index];
-                                if (ds.data()['read'] == false) {
-                                  Database().seen(
-                                      chatRoomId, widget.userDetails['uid']);
-                                }
-                                bool visible = false;
-
-                                return StatefulBuilder(builder:
-                                    (BuildContext context,
-                                        StateSetter setState1) {
-                                  return Container(
-                                    // message area
-                                    margin: EdgeInsets.all(10),
-                                    alignment: ds['senderUid'] ==
-                                            widget.userDetails['uid']
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                    width:
-                                        MediaQuery.of(context).size.width - 10,
-                                    child: Column(
-                                      children: [
-                                        InkWell(
-                                          onLongPress: () {
-                                            setState1(() => visible = !visible);
-                                          },
-                                          child: Container(
-                                            // first container
-                                            decoration: BoxDecoration(
-                                              color: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Color(0xfff5f5f5)
-                                                  : Colors.indigo[400],
-                                              // Color(0xff7269ef),
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                topRight: Radius.circular(15),
-                                              ),
-                                            ),
-                                            alignment: ds['senderUid'] ==
-                                                    widget.userDetails['uid']
-                                                ? Alignment.centerRight
-                                                : Alignment.centerLeft,
-                                            padding: EdgeInsets.all(5),
-                                            width: ds['msgType'] == "text"
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.6
-                                                : MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.35,
-                                            child: ds['msgType'] == 'text'
-                                                ? Text(
-                                                    ds['senderUid'] ==
-                                                            widget.userDetails[
-                                                                'uid']
-                                                        ? ds['origMessage']
-                                                        : ds['transMessage'],
-                                                    style: msgStyle(ds[
-                                                                'senderUid'] ==
-                                                            widget.userDetails[
-                                                                'uid']
-                                                        ? Colors.black
-                                                        : Colors.white),
-                                                  )
-                                                : MaterialButton(
-                                                    animationDuration:
-                                                        Duration(seconds: 1),
-                                                    onPressed: () {
-                                                      ds['senderUid'] ==
-                                                              widget.userDetails[
-                                                                  'uid']
-                                                          ? _textToSpeech(
-                                                              ds['origMessage'],
-                                                              widget.userDetails[
-                                                                  'langPref'])
-                                                          : _textToSpeech(
-                                                              ds[
-                                                                  'transMessage'],
-                                                              receiverDetails
-                                                                      .data()[
-                                                                  'langPref']);
-                                                    },
-                                                    color: Colors.indigo[50],
-                                                    textColor: Colors.grey,
-                                                    splashColor: Colors.indigo,
-                                                    child: Icon(
-                                                      Icons.play_arrow,
-                                                      size: 24,
-                                                    ),
-                                                    shape: CircleBorder(),
-                                                  ),
-                                          ),
-                                        ),
-                                        Visibility(
-                                          visible: visible,
-                                          child: Container(
-                                            // second container
-                                            decoration: BoxDecoration(
-                                              color: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Colors.white
-                                                  : Colors.indigo[300],
-                                              // Color(0xff9b95f5),
-                                              // borderRadius: BorderRadius.only(
-                                              //   bottomLeft: ds['senderUid'] ==
-                                              //           widget.userDetails['uid']
-                                              //       ? Radius.circular(15)
-                                              //       : Radius.circular(0),
-                                              //   bottomRight: ds['senderUid'] ==
-                                              //           widget.userDetails['uid']
-                                              //       ? Radius.circular(0)
-                                              //       : Radius.circular(15),
-                                              // ),
-                                            ),
-                                            padding: EdgeInsets.all(5),
-                                            width: ds['msgType'] == "text"
-                                                ? MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.6
-                                                : MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.35,
-                                            alignment: ds['senderUid'] ==
-                                                    widget.userDetails['uid']
-                                                ? Alignment.centerRight
-                                                : Alignment.centerLeft,
-                                            child: ds['msgType'] == 'text'
-                                                ? Text(
-                                                    ds['senderUid'] ==
-                                                            widget.userDetails[
-                                                                'uid']
-                                                        ? ds['transMessage']
-                                                        : ds['origMessage'],
-                                                    style: msgStyle(ds[
-                                                                'senderUid'] ==
-                                                            widget.userDetails[
-                                                                'uid']
-                                                        ? Colors.black
-                                                        : Colors.white),
-                                                  )
-                                                : MaterialButton(
-                                                    animationDuration:
-                                                        Duration(seconds: 1),
-                                                    onPressed: () {
-                                                      ds['senderUid'] ==
-                                                              widget.userDetails[
-                                                                  'uid']
-                                                          ? _textToSpeech(
-                                                              ds[
-                                                                  'transMessage'],
-                                                              receiverDetails
-                                                                      .data()[
-                                                                  'langPref'])
-                                                          : _textToSpeech(
-                                                              ds['origMessage'],
-                                                              widget.userDetails[
-                                                                  'langPref']);
-                                                    },
-                                                    color: Colors.indigo[50],
-                                                    textColor: Colors.grey,
-                                                    splashColor: Colors.indigo,
-                                                    child: Icon(
-                                                      Icons.play_arrow,
-                                                      size: 24,
-                                                    ),
-                                                    shape: CircleBorder(),
-                                                  ),
-                                          ),
-                                        ),
-                                        Container(
-                                          // time
+                  // Chat area
+                  height: MediaQuery.of(context).size.height * 0.8,
+                  width: MediaQuery.of(context).size.width - 10,
+                  child: StreamBuilder(
+                    stream: chats,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot ds = snapshot.data.docs[index];
+                              if (ds.data()['read'] == false) {
+                                Database().seen(
+                                    chatRoomId, widget.userDetails['uid']);
+                              }
+                              bool visible = false;
+                              return StatefulBuilder(builder: (
+                                BuildContext context,
+                                StateSetter setState1,
+                              ) {
+                                return Container(
+                                  // message area
+                                  margin: EdgeInsets.all(10),
+                                  alignment: ds['senderUid'] ==
+                                          widget.userDetails['uid']
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  width: MediaQuery.of(context).size.width - 10,
+                                  child: Column(
+                                    children: [
+                                      InkWell(
+                                        onLongPress: () {
+                                          setState1(() => visible = !visible);
+                                        },
+                                        child: Container(
+                                          // first container
                                           decoration: BoxDecoration(
                                             color: ds['senderUid'] ==
                                                     widget.userDetails['uid']
-                                                ? visible
-                                                    ? Colors.white
-                                                    : Color(0xfff5f5f5)
-                                                : visible
-                                                    ? Colors.indigo[300]
-                                                    : Colors.indigo[400],
-                                            // Color(0xff9b95f5),
+                                                ? Color(0xfff5f5f5)
+                                                : Colors.indigo[400],
+                                            // Color(0xff7269ef),
                                             borderRadius: BorderRadius.only(
-                                              bottomLeft: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(15)
-                                                  : Radius.circular(0),
-                                              bottomRight: ds['senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? Radius.circular(0)
-                                                  : Radius.circular(15),
+                                              topLeft: Radius.circular(15),
+                                              topRight: Radius.circular(15),
                                             ),
                                           ),
+                                          alignment: ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
+                                          padding: EdgeInsets.all(5),
+                                          width: ds['msgType'] == "text"
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6
+                                              : MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.35,
+                                          child: ds['msgType'] == 'text'
+                                              ? Text(
+                                                  ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? ds['origMessage']
+                                                      : ds['transMessage'],
+                                                  style: msgStyle(ds[
+                                                              'senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                                )
+                                              : MaterialButton(
+                                                  animationDuration:
+                                                      Duration(seconds: 1),
+                                                  onPressed: () {
+                                                    ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid']
+                                                        ? _textToSpeech(
+                                                            ds['origMessage'],
+                                                            widget.userDetails[
+                                                                'langPref'])
+                                                        : _textToSpeech(
+                                                            ds['transMessage'],
+                                                            receiverDetails
+                                                                    .data()[
+                                                                'langPref']);
+                                                  },
+                                                  color: Colors.indigo[50],
+                                                  textColor: Colors.grey,
+                                                  splashColor: Colors.indigo,
+                                                  child: Icon(
+                                                    Icons.play_arrow,
+                                                    size: 24,
+                                                  ),
+                                                  shape: CircleBorder(),
+                                                ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: visible,
+                                        child: Container(
+                                          // second container
+                                          decoration: BoxDecoration(
+                                            color: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Colors.white
+                                                : Colors.indigo[300],
+                                            // Color(0xff9b95f5),
+                                            // borderRadius: BorderRadius.only(
+                                            //   bottomLeft: ds['senderUid'] ==
+                                            //           widget.userDetails['uid']
+                                            //       ? Radius.circular(15)
+                                            //       : Radius.circular(0),
+                                            //   bottomRight: ds['senderUid'] ==
+                                            //           widget.userDetails['uid']
+                                            //       ? Radius.circular(0)
+                                            //       : Radius.circular(15),
+                                            // ),
+                                          ),
+                                          padding: EdgeInsets.all(5),
                                           width: ds['msgType'] == "text"
                                               ? MediaQuery.of(context)
                                                       .size
@@ -341,51 +260,131 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   widget.userDetails['uid']
                                               ? Alignment.centerRight
                                               : Alignment.centerLeft,
-                                          // color: Colors.white.withOpacity(0),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Row(
-                                              mainAxisAlignment: ds[
-                                                          'senderUid'] ==
-                                                      widget.userDetails['uid']
-                                                  ? MainAxisAlignment.end
-                                                  : MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  DateFormat('dd MMM  HH:mm')
-                                                      .format(ds['timestamp']
-                                                          .toDate())
-                                                      .toString(),
-                                                  style: GoogleFonts.openSans(
-                                                      color: ds['senderUid'] ==
-                                                              widget.userDetails[
-                                                                  'uid']
-                                                          ? Colors.black
-                                                          : Colors.white,
-                                                      fontSize: 12),
-                                                ),
-                                                SizedBox(width: 10),
-                                                (ds['senderUid'] ==
+                                          child: ds['msgType'] == 'text'
+                                              ? Text(
+                                                  ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? ds['transMessage']
+                                                      : ds['origMessage'],
+                                                  style: msgStyle(ds[
+                                                              'senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid']
+                                                      ? Colors.black
+                                                      : Colors.white),
+                                                )
+                                              : MaterialButton(
+                                                  animationDuration:
+                                                      Duration(seconds: 1),
+                                                  onPressed: () {
+                                                    ds['senderUid'] ==
                                                             widget.userDetails[
-                                                                'uid'] &&
-                                                        ds['read'])
-                                                    ? Icon(Icons.done_all,
-                                                        color: Colors.blue)
-                                                    : SizedBox()
-                                              ],
-                                            ),
+                                                                'uid']
+                                                        ? _textToSpeech(
+                                                            ds['transMessage'],
+                                                            receiverDetails
+                                                                    .data()[
+                                                                'langPref'])
+                                                        : _textToSpeech(
+                                                            ds['origMessage'],
+                                                            widget.userDetails[
+                                                                'langPref']);
+                                                  },
+                                                  color: Colors.indigo[50],
+                                                  textColor: Colors.grey,
+                                                  splashColor: Colors.indigo,
+                                                  child: Icon(
+                                                    Icons.play_arrow,
+                                                    size: 24,
+                                                  ),
+                                                  shape: CircleBorder(),
+                                                ),
+                                        ),
+                                      ),
+                                      Container(
+                                        // time
+                                        decoration: BoxDecoration(
+                                          color: ds['senderUid'] ==
+                                                  widget.userDetails['uid']
+                                              ? visible
+                                                  ? Colors.white
+                                                  : Color(0xfff5f5f5)
+                                              : visible
+                                                  ? Colors.indigo[300]
+                                                  : Colors.indigo[400],
+                                          // Color(0xff9b95f5),
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Radius.circular(15)
+                                                : Radius.circular(0),
+                                            bottomRight: ds['senderUid'] ==
+                                                    widget.userDetails['uid']
+                                                ? Radius.circular(0)
+                                                : Radius.circular(15),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                });
+                                        width: ds['msgType'] == "text"
+                                            ? MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.6
+                                            : MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.35,
+                                        alignment: ds['senderUid'] ==
+                                                widget.userDetails['uid']
+                                            ? Alignment.centerRight
+                                            : Alignment.centerLeft,
+                                        // color: Colors.white.withOpacity(0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                ds['senderUid'] ==
+                                                        widget
+                                                            .userDetails['uid']
+                                                    ? MainAxisAlignment.end
+                                                    : MainAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                DateFormat('dd MMM  HH:mm')
+                                                    .format(ds['timestamp']
+                                                        .toDate())
+                                                    .toString(),
+                                                style: GoogleFonts.openSans(
+                                                    color: ds['senderUid'] ==
+                                                            widget.userDetails[
+                                                                'uid']
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                              SizedBox(width: 10),
+                                              (ds['senderUid'] ==
+                                                          widget.userDetails[
+                                                              'uid'] &&
+                                                      ds['read'])
+                                                  ? Icon(Icons.done_all,
+                                                      color: Colors.blue)
+                                                  : SizedBox()
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               });
-                        } else {
-                          return Container();
-                        }
-                      },
-                    )),
+                            });
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
                 Container(
                   // typing area
                   height: MediaQuery.of(context).size.height * 0.07,
@@ -453,7 +452,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                   "text",
                                   false);
                               _msgController.text = '';
-                              setState(() {});
                             });
                           }
                         },

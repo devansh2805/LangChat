@@ -1,4 +1,3 @@
-import 'package:LangChat/backend/authentication.dart';
 import 'package:LangChat/screens/UpdateProfile.dart';
 import 'package:LangChat/screens/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,8 +95,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 color: Colors.white,
                 icon: Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UpdateProfile()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UpdateProfile()),
+                  );
                 },
               )
             ],

@@ -96,66 +96,78 @@ class _ContactsState extends State<Contacts> {
                           print(documentSnapshot.data()["imageUrl"]);
                           return Container(
                             decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
                             margin: EdgeInsets.all(6),
                             child: ListTile(
-                                leading: Hero(
-                                  tag: "profile",
-                                  child: CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage:
-                                        documentSnapshot.data()["imageUrl"] ==
-                                                ""
-                                            ? AssetImage("assets/dummy.png")
-                                            : NetworkImage(documentSnapshot
-                                                .data()["imageUrl"]),
-                                  ),
+                              leading: Hero(
+                                tag: "profile",
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage:
+                                      documentSnapshot.data()["imageUrl"] == ""
+                                          ? AssetImage("assets/dummy.png")
+                                          : NetworkImage(
+                                              documentSnapshot
+                                                  .data()["imageUrl"],
+                                            ),
                                 ),
-                                title: Text(documentSnapshot.data()['name'],
-                                    style: GoogleFonts.sourceSansPro(
-                                        fontSize: 18)),
-                                subtitle: Text(
-                                    documentSnapshot.data()['phoneNum'],
-                                    style: GoogleFonts.sourceSansPro()),
-                                onTap: () {
-                                  var chatRoomId = getChatRoomId(
-                                      userDetails.data()['uid'],
-                                      documentSnapshot.data()['uid']);
-                                  Map<String, dynamic> chatRoomInfo = {
-                                    'lastMsgOrig': '',
-                                    'lastMsgTrans': '',
-                                    'timestamp': '',
-                                    'sentBy': '',
-                                    'lastMsgSeen': false,
-                                    'users': [
-                                      userDetails.data()['name'],
-                                      documentSnapshot.data()['name']
-                                    ],
-                                    'userIds': [
-                                      userDetails.data()['uid'],
-                                      documentSnapshot.data()['uid']
-                                    ],
-                                  };
-                                  // this function creates a chatroom only if it doesnt exist
-                                  Database()
-                                      .createChatRoom(chatRoomId, chatRoomInfo)
-                                      .then((s) {
+                              ),
+                              title: Text(
+                                documentSnapshot.data()['name'],
+                                style: GoogleFonts.sourceSansPro(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              subtitle: Text(
+                                documentSnapshot.data()['phoneNum'],
+                                style: GoogleFonts.sourceSansPro(),
+                              ),
+                              onTap: () {
+                                var chatRoomId = getChatRoomId(
+                                    userDetails.data()['uid'],
+                                    documentSnapshot.data()['uid']);
+                                Map<String, dynamic> chatRoomInfo = {
+                                  'lastMsgOrig': '',
+                                  'lastMsgTrans': '',
+                                  'timestamp': '',
+                                  'sentBy': '',
+                                  'lastMsgSeen': false,
+                                  'users': [
+                                    userDetails.data()['name'],
+                                    documentSnapshot.data()['name']
+                                  ],
+                                  'userIds': [
+                                    userDetails.data()['uid'],
+                                    documentSnapshot.data()['uid']
+                                  ],
+                                };
+                                // this function creates a chatroom only if it doesnt exist
+                                Database()
+                                    .createChatRoom(chatRoomId, chatRoomInfo)
+                                    .then(
+                                  (s) {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatScreen({
-                                                  'uid':
-                                                      userDetails.data()['uid'],
-                                                  'langPref': userDetails
-                                                      .data()['langPref'],
-                                                  'receiverUid':
-                                                      documentSnapshot
-                                                          .data()['uid']
-                                                })));
-                                  });
-                                }),
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                          {
+                                            'uid': userDetails.data()['uid'],
+                                            'langPref':
+                                                userDetails.data()['langPref'],
+                                            'receiverUid':
+                                                documentSnapshot.data()['uid']
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
                           );
                         } else {
                           // dont show if not belonging to contacts
@@ -172,6 +184,8 @@ class _ContactsState extends State<Contacts> {
                     );
             },
           )
-        : Center(child: CircularProgressIndicator());
+        : Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }

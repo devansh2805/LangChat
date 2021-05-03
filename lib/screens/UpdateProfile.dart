@@ -95,11 +95,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     ],
                   ),
                   SizedBox(height: 15),
-                  Text(userDetails.data()['name'],
-                      style: GoogleFonts.sourceSansPro(
-                          fontSize: 22,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700)),
+                  Text(
+                    userDetails.data()['name'],
+                    style: GoogleFonts.sourceSansPro(
+                      fontSize: 22,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   SizedBox(height: 45),
                   Text(
                     "Change your preferred language",
@@ -133,17 +136,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       'German',
                       'Hindi',
                       'Spanish'
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                          child: Text(
-                            value,
-                            style: GoogleFonts.sourceSansPro(),
+                    ].map(
+                      (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Container(
+                            child: Text(
+                              value,
+                              style: GoogleFonts.sourceSansPro(),
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      },
+                    ).toList(),
                   ),
                   SizedBox(height: 50),
                   TextButton(
@@ -162,7 +167,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     child: Text(
                       "SAVE",
                       style: GoogleFonts.sourceSansPro(
-                          color: Colors.white, fontSize: 20),
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
                   )
                 ],
@@ -196,9 +203,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
           });
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("Something went wrong!"),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Something went wrong!"),
+          ),
+        );
       }
     } else {
       print("Permission was not granted");
@@ -226,9 +235,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 "REMOVE PROFILE PICTURE",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: imageUrl == "" || imageUrl == null
-                        ? Colors.grey
-                        : Colors.black),
+                  color: imageUrl == "" || imageUrl == null
+                      ? Colors.grey
+                      : Colors.black,
+                ),
               ),
             ),
           ),
@@ -238,10 +248,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 await uploadImage();
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.camera, color: Colors.black),
+              icon: Icon(
+                Icons.camera,
+                color: Colors.black,
+              ),
               label: Text(
                 "CHOOSE IMAGE",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: Colors.black,
+                ),
               ),
             ),
           )

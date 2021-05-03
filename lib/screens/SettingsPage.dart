@@ -29,15 +29,22 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 40),
+        margin: EdgeInsets.symmetric(
+          horizontal: 40,
+        ),
         child: Column(
           children: <Widget>[
             SizedBox(
               height: 90.0,
             ),
             Center(
-              child: Text("Enter your details",
-                  style: GoogleFonts.roboto(color: Colors.grey, fontSize: 30)),
+              child: Text(
+                "Enter your details",
+                style: GoogleFonts.roboto(
+                  color: Colors.grey,
+                  fontSize: 30,
+                ),
+              ),
             ),
             SizedBox(
               height: 50.0,
@@ -55,7 +62,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 name = value;
               },
               decoration: InputDecoration(
-                icon: Icon(Icons.person),
+                icon: Icon(
+                  Icons.person,
+                ),
                 hintText: 'Your name',
                 labelText: 'Enter your name',
                 errorText: (!validText && textFieldTouched)
@@ -66,16 +75,22 @@ class _SettingsPageState extends State<SettingsPage> {
             SizedBox(
               height: 50.0,
             ),
-            Text("Choose preferred language",
-                style: GoogleFonts.roboto(color: Colors.grey, fontSize: 16)),
+            Text(
+              "Choose preferred language",
+              style: GoogleFonts.roboto(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            ),
             DropdownButton<String>(
               value: prefLang,
               icon: Icon(Icons.keyboard_arrow_down),
               iconSize: 24,
               style: GoogleFonts.sourceSansPro(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
+                fontSize: 20.0,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
               underline: Container(
                 height: 2,
                 color: Colors.grey,
@@ -92,24 +107,28 @@ class _SettingsPageState extends State<SettingsPage> {
                 'German',
                 'Hindi',
                 'Spanish'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
+              ].map<DropdownMenuItem<String>>(
+                (String value) {
+                  return DropdownMenuItem<String>(
                     value: value,
                     child: Container(
                       child: Text(
                         value,
                         style: GoogleFonts.sourceSansPro(),
                       ),
-                    ));
-              }).toList(),
+                    ),
+                  );
+                },
+              ).toList(),
             ),
             SizedBox(
               height: 30.0,
             ),
             TextButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.indigo[400]),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.indigo[400],
+                ),
               ),
               onPressed: () async {
                 if (_nameController.text == '') {
@@ -122,11 +141,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       name,
                       FirebaseAuth.instance.currentUser.phoneNumber,
                       langCodes[prefLang]);
-                  Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return WelcomeScreen();
-                    },
-                  ));
+                  Navigator.of(context).pushReplacement(
+                    new MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return WelcomeScreen();
+                      },
+                    ),
+                  );
                 }
               },
               child: Text(

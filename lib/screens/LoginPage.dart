@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-
 import '../backend/authentication.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,7 +31,9 @@ class LoginPageState extends State<LoginPage> {
               controller: _phoneController,
               decoration: new InputDecoration(
                 labelText: "Mobile Number",
-                border: OutlineInputBorder(borderSide: BorderSide()),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(),
+                ),
               ),
               initialCountryCode: 'IN',
               keyboardType: TextInputType.number,
@@ -57,11 +58,14 @@ class LoginPageState extends State<LoginPage> {
               child: Text(
                 'Login',
                 style: GoogleFonts.sourceSansPro(
-                    color: Colors.white, fontSize: 20),
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
               ),
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.indigo[400]),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.indigo[400],
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -69,10 +73,15 @@ class LoginPageState extends State<LoginPage> {
                 ? Column(
                     children: [
                       Center(
-                          child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.indigo[500]))),
-                      Text("please wait...")
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.indigo[500],
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "please wait...",
+                      ),
                     ],
                   )
                 : Container()

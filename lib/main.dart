@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
   changeScreen() async {
     await Future.delayed(Duration(seconds: 5));
     showStartScreen = false;
-    setState(() {});
   }
 
   @override
@@ -42,17 +41,9 @@ class _MyAppState extends State<MyApp> {
               ? LoginPage()
               : WelcomeScreen())
           : Start(),
-      theme: new ThemeData(primarySwatch: Colors.grey),
+      theme: new ThemeData(
+        primarySwatch: Colors.grey,
+      ),
     );
   }
 }
-
-// FutureBuilder(
-//               future: Auth().getCurrentUser(),
-//               builder: (context, snapshot) {
-//                 if (snapshot.hasData) {
-//                   return WelcomeScreen();
-//                 } else {
-//                   return LoginPage();
-//                 }
-//               })
