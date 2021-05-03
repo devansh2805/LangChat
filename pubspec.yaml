@@ -1,5 +1,5 @@
 name: LangChat
-description: A new Flutter project.
+description: LangChat is very similar to regular chat application, wherein users communicate with each other using messages over the internet. What langChat brings in new is the idea of removing language barriers in such a communication system.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -32,17 +32,17 @@ dependencies:
   firebase_auth: ^1.0.1
   firebase_core: ^1.0.2
   firebase_storage: ^8.0.3
+  flutter_launcher_icons: ^0.9.0
   flutter_tts: ^3.0.0
   google_fonts: ^2.0.0
   image_picker: ^0.7.4
   intl_phone_field: ^1.4.4
   permission_handler: ^6.1.1
-  translator: ^0.1.5
   speech_to_text: ^2.7.0
-  flutter_launcher_icons: ^0.9.0
+  translator: ^0.1.5
 
 flutter_icons:
-  image_path: "assets/appLogo.png"
+  image_path: "assets/applogo.png"
   android: true
 
 dev_dependencies:
