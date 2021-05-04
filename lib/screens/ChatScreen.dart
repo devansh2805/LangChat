@@ -154,7 +154,18 @@ class _ChatScreenState extends State<ChatScreen> {
                                     children: [
                                       InkWell(
                                         onLongPress: () {
-                                          setState1(() => visible = !visible);
+                                          if (ds['origMessage'] ==
+                                              ds['transMessage']) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                    'Original and Translated messages are same'),
+                                              ),
+                                            );
+                                          } else {
+                                            setState1(() => visible = !visible);
+                                          }
                                         },
                                         child: Container(
                                           // first container
