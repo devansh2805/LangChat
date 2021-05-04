@@ -22,6 +22,7 @@ Languages Supported are:
 4. German
 5. Hindi
 6. French
+
 Application can obviously be extended to more languages 😏, but for now these are supported.
 
 [![](https://img.shields.io/badge/Made_Using-Flutter-blue?style=flat-square&logo=flutter)](https://flutter.dev/docs)
