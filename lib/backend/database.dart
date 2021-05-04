@@ -60,6 +60,13 @@ class Database {
         .update({'lastMsgSeen': true});
   }
 
+  pushToken(String uid, String token) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({'pushToken': token});
+  }
+
   Future<void> updateProfilePic(String uid, String url) async {
     await FirebaseFirestore.instance
         .collection('users')
