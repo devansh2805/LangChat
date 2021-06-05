@@ -49,6 +49,25 @@ class LoginPageState extends State<LoginPage> {
             new SizedBox(
               height: 16,
             ),
+            clicked
+                ? Column(
+                    children: [
+                      Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.indigo[400]),
+                        ),
+                      ),
+                      Text(
+                        'please wait for the verification code..',
+                        style: GoogleFonts.lexendDeca(),
+                      )
+                    ],
+                  )
+                : Container(),
+            new SizedBox(
+              height: 16,
+            ),
             new TextButton(
               onPressed: () async {
                 final phoneNumber = countryCode + _phoneController.text.trim();
@@ -57,7 +76,7 @@ class LoginPageState extends State<LoginPage> {
               },
               child: Text(
                 'Login',
-                style: GoogleFonts.sourceSansPro(
+                style: GoogleFonts.lexendDeca(
                   color: Colors.white,
                   fontSize: 20,
                 ),
@@ -69,22 +88,6 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 10),
-            clicked
-                ? Column(
-                    children: [
-                      Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.indigo[500],
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "please wait...",
-                      ),
-                    ],
-                  )
-                : Container()
           ],
         ),
       ),

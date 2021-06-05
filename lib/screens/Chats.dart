@@ -65,7 +65,7 @@ class _ChatsState extends State<Chats> {
                   ),
                 );
               } else {
-                return (snapshot.hasData)
+                return (snapshot.hasData && snapshot.data.docs.length > 0)
                     ? ListView.builder(
                         itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
@@ -160,8 +160,25 @@ class _ChatsState extends State<Chats> {
                         },
                       )
                     : Center(
-                        child: Text(
-                          'You have not chatted with anyone yet',
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/no_res.png',
+                              height: MediaQuery.of(context).size.height * 0.1,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "No chats",
+                              style: GoogleFonts.quicksand(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
                         ),
                       );
               }
