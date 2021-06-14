@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
+import 'dart:ui';
 
 // ignore: must_be_immutable
 class AudioWidget extends StatefulWidget {
@@ -61,129 +63,138 @@ class _AudioWidgetState extends State<AudioWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      elevation: 0,
-      backgroundColor: Colors.indigo[50],
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.30,
-        width: MediaQuery.of(context).size.width - 10,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(_audioString),
-            Visibility(
-              visible: _recordVisibility,
-              child: TextButton(
-                child: Text("Record"),
-                onPressed: _listen,
+    return BackdropFilter(
+      filter: ImageFilter.blur(
+        sigmaX: 10.0,
+        sigmaY: 10.0,
+      ),
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        elevation: 0,
+        backgroundColor: Colors.indigo[50],
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.30,
+          width: MediaQuery.of(context).size.width - 10,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_audioString, style: GoogleFonts.lexendDeca(fontSize: 16)),
+              Visibility(
+                visible: _recordVisibility,
+                child: TextButton(
+                  child: Text("Record",
+                      style: GoogleFonts.lexendDeca(
+                          fontSize: 16, fontWeight: FontWeight.w600)),
+                  onPressed: _listen,
+                ),
               ),
-            ),
-            Visibility(
-              visible: _recordAudioVisibility,
-              child: AvatarGlow(
-                animate: _isListening,
-                glowColor: Theme.of(context).primaryColor,
-                endRadius: 75.0,
-                duration: const Duration(milliseconds: 500),
-                repeatPauseDuration: const Duration(milliseconds: 100),
-                repeat: true,
-                child: Icon(Icons.mic),
+              Visibility(
+                visible: _recordAudioVisibility,
+                child: AvatarGlow(
+                  animate: _isListening,
+                  glowColor: Theme.of(context).primaryColor,
+                  endRadius: 75.0,
+                  duration: const Duration(milliseconds: 500),
+                  repeatPauseDuration: const Duration(milliseconds: 100),
+                  repeat: true,
+                  child: Icon(Icons.mic),
+                ),
               ),
-            ),
-            Visibility(
-              visible: _recordAudioVisibility,
-              child: TextButton(
-                onPressed: () async {
-                  setState(() {
-                    _recordAudioVisibility = false;
-                    _audioString = "";
-                    _isListening = false;
-                    _loadingVisibility = true;
-                  });
-                  _translatedtext = await _translateText();
-                  if (_translatedtext == "") {
+              Visibility(
+                visible: _recordAudioVisibility,
+                child: TextButton(
+                  onPressed: () async {
                     setState(() {
-                      _audioString = "Couldnot capture Voice Record Again";
-                      _loadingVisibility = false;
-                      _recordVisibility = true;
+                      _recordAudioVisibility = false;
+                      _audioString = "";
+                      _isListening = false;
+                      _loadingVisibility = true;
                     });
-                  }
-                },
-                child: Text("Stop Recording"),
+                    _translatedtext = await _translateText();
+                    if (_translatedtext == "") {
+                      setState(() {
+                        _audioString = "Couldnot capture Voice Record Again";
+                        _loadingVisibility = false;
+                        _recordVisibility = true;
+                      });
+                    }
+                  },
+                  child: Text("Stop Recording",
+                      style: GoogleFonts.lexendDeca(fontSize: 16)),
+                ),
               ),
-            ),
-            Visibility(
-              visible: _loadingVisibility,
-              child: CircularProgressIndicator(),
-            ),
-            Visibility(
-              visible: _audioFilesVisibility,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Original Audio"),
-                  IconButton(
-                    onPressed: () {
-                      _textToSpeech(_listeningString, _senderLanguage);
-                    },
-                    icon: Icon(
-                      Icons.play_arrow,
-                      color: Colors.green,
+              Visibility(
+                visible: _loadingVisibility,
+                child: CircularProgressIndicator(),
+              ),
+              Visibility(
+                visible: _audioFilesVisibility,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Original Audio"),
+                    IconButton(
+                      onPressed: () {
+                        _textToSpeech(_listeningString, _senderLanguage);
+                      },
+                      icon: Icon(
+                        Icons.play_arrow,
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: _audioFilesVisibility,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Translated Audio"),
-                  IconButton(
-                    onPressed: () {
-                      _textToSpeech(_translatedtext, _receiverLanguage);
-                    },
-                    icon: Icon(
-                      Icons.play_arrow,
-                      color: Colors.green,
+              Visibility(
+                visible: _audioFilesVisibility,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Translated Audio"),
+                    IconButton(
+                      onPressed: () {
+                        _textToSpeech(_translatedtext, _receiverLanguage);
+                      },
+                      icon: Icon(
+                        Icons.play_arrow,
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: _sendCancelVisibility,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    color: Colors.green,
-                    onPressed: () {
-                      Database().sendMessage(
-                          _listeningString,
-                          _translatedtext,
-                          DateTime.now(),
-                          FirebaseAuth.instance.currentUser.uid,
-                          _chatRoomId,
-                          "audio",
-                          false);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.cancel_outlined),
-                    color: Colors.red,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+              Visibility(
+                visible: _sendCancelVisibility,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.send),
+                      color: Colors.green,
+                      onPressed: () {
+                        Database().sendMessage(
+                            _listeningString,
+                            _translatedtext,
+                            DateTime.now(),
+                            FirebaseAuth.instance.currentUser.uid,
+                            _chatRoomId,
+                            "audio",
+                            false);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.cancel_outlined),
+                      color: Colors.red,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
