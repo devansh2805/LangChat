@@ -90,7 +90,8 @@ exports.sendNotification = functions.firestore
     });
 ```
 
-[![](https://img.shields.io/badge/Made_Using-Flutter-blue?style=flat-square&logo=flutter)](https://flutter.dev/docs)
+[![](https://img.shields.io/badge/Made_Using-Flutter-blue?style=curve-square&logo=flutter)](https://flutter.dev/docs)
 
-[![](https://img.shields.io/badge/Database-Firebase-yellow?style=flat-square&logo=firebase)](https://flutter.dev/docs)
+[![](https://img.shields.io/badge/Database-Firebase-yellow?style=curve-square&logo=firebase)](https://flutter.dev/docs)
 
+[![](https://img.shields.io/badge/Editor-Visual_Studio_Code-0073bf?style=curve-square&logo=visualstudiocode)](https://flutter.dev/docs)
