@@ -90,6 +90,13 @@ exports.sendNotification = functions.firestore
     });
 ```
 
+### Internationalization
+Currently implemented for English and Hindi.
+
+<img src="https://github.com/devansh2805/LangChat/blob/main/demo/demo.gif?raw=true" width="300" />
+
+### Tech Stack
+
 [![](https://img.shields.io/badge/Made_Using-Flutter-blue?style=curve-square&logo=flutter)](https://flutter.dev/docs)
 
 [![](https://img.shields.io/badge/Database-Firebase-yellow?style=curve-square&logo=firebase)](https://flutter.dev/docs)
