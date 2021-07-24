@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:io';
 
 class UpdateProfile extends StatefulWidget {
@@ -105,7 +106,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   ),
                   SizedBox(height: 45),
                   Text(
-                    "Change your preferred language",
+                    AppLocalizations.of(context).choosePrefLang,
                     style: GoogleFonts.sourceSansPro(
                       color: Colors.grey[600],
                       fontSize: 18,
@@ -156,7 +157,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       await Database().changeLangPref(uid, langCodes[prefLang]);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Language preference updated"),
+                          content: Text(
+                              AppLocalizations.of(context).langPrefUpdated),
                         ),
                       );
                     },
@@ -165,7 +167,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           MaterialStateProperty.all<Color>(Colors.indigo[400]),
                     ),
                     child: Text(
-                      "SAVE",
+                      AppLocalizations.of(context).save,
                       style: GoogleFonts.sourceSansPro(
                         color: Colors.white,
                         fontSize: 20,
@@ -205,7 +207,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Something went wrong!"),
+            content: Text(AppLocalizations.of(context).somethingWentWrong),
           ),
         );
       }
@@ -232,7 +234,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       Navigator.pop(context);
                     },
               child: Text(
-                "REMOVE PROFILE PICTURE",
+                AppLocalizations.of(context).removeProfile,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: imageUrl == "" || imageUrl == null
@@ -253,7 +255,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 color: Colors.black,
               ),
               label: Text(
-                "CHOOSE IMAGE",
+                AppLocalizations.of(context).chooseImg,
                 style: TextStyle(
                   color: Colors.black,
                 ),

@@ -7,6 +7,7 @@ import 'package:translator/translator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'AudioWidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
@@ -415,7 +416,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           controller: _msgController,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Send some message...",
+                            hintText: "Send some message",
                           ),
                         ),
                       ),

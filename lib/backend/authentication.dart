@@ -4,7 +4,7 @@ import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'database.dart';
 
 class Auth {
@@ -47,7 +47,7 @@ class Auth {
                 String errorText = "";
                 return StatefulBuilder(builder: (context, setState) {
                   return AlertDialog(
-                    title: Text("Enter Code"),
+                    title: Text(AppLocalizations.of(context).enterCode),
                     content: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -84,7 +84,8 @@ class Auth {
                               .catchError((error) {
                             if (error.code == "session-expired") {
                               Navigator.pop(context);
-                              _showAlertDialog(context, "Session expired");
+                              _showAlertDialog(context,
+                                  AppLocalizations.of(context).sessionExp);
                             } else {
                               setState(() => errorText = error.code);
                             }
@@ -112,7 +113,7 @@ class Auth {
                           });
                         },
                         child: Text(
-                          "Confirm",
+                          AppLocalizations.of(context).confirm,
                           style: GoogleFonts.sourceSansPro(color: Colors.white),
                         ),
                         style: ButtonStyle(
@@ -135,7 +136,7 @@ class Auth {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Error',
+            AppLocalizations.of(context).error,
             style: GoogleFonts.sourceSansPro(),
           ),
           content: Text(msg),

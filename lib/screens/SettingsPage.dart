@@ -4,6 +4,7 @@ import 'package:LangChat/screens/WelcomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
@@ -39,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Center(
               child: Text(
-                "Enter your details",
+                AppLocalizations.of(context).enterYourDetails,
                 style: GoogleFonts.roboto(
                   color: Colors.grey,
                   fontSize: 30,
@@ -65,10 +66,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icon(
                   Icons.person,
                 ),
-                hintText: 'Your name',
-                labelText: 'Enter your name',
+                hintText: AppLocalizations.of(context).yourName,
+                labelText: AppLocalizations.of(context).enterYourName,
                 errorText: (!validText && textFieldTouched)
-                    ? 'Value Can\'t Be Empty'
+                    ? AppLocalizations.of(context).valueCantBeEmpty
                     : null,
               ),
             ),
@@ -76,7 +77,7 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 50.0,
             ),
             Text(
-              "Choose preferred language",
+              AppLocalizations.of(context).choosePrefLang,
               style: GoogleFonts.roboto(
                 color: Colors.grey,
                 fontSize: 16,
@@ -151,7 +152,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               },
               child: Text(
-                'Next',
+                AppLocalizations.of(context).next,
                 style: GoogleFonts.sourceSansPro(
                     color: Colors.white, fontSize: 18),
               ),
