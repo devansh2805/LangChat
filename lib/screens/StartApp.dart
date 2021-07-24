@@ -1,6 +1,7 @@
 // Splash Screen
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Start extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _StartState extends State<Start> {
                   height: 15,
                 ),
                 Text(
-                  "Removing Language Barrier",
+                  AppLocalizations.of(context).removingLangBar,
                   style: GoogleFonts.sourceSansPro(
                     color: Colors.grey[600],
                     fontSize: 17,

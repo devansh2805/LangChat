@@ -1,5 +1,5 @@
 // this is the screen where you will see the people with whom you have already chatted
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:LangChat/backend/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -171,7 +171,7 @@ class _ChatsState extends State<Chats> {
                               height: 10,
                             ),
                             Text(
-                              "No chats",
+                              AppLocalizations.of(context).noChats,
                               style: GoogleFonts.quicksand(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.w600,

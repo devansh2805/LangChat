@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:translator/translator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:ui';
 
 // ignore: must_be_immutable
@@ -82,7 +83,7 @@ class _AudioWidgetState extends State<AudioWidget> {
               Visibility(
                 visible: _recordVisibility,
                 child: TextButton(
-                  child: Text("Record",
+                  child: Text(AppLocalizations.of(context).record,
                       style: GoogleFonts.lexendDeca(
                           fontSize: 16, fontWeight: FontWeight.w600)),
                   onPressed: _listen,
@@ -113,13 +114,14 @@ class _AudioWidgetState extends State<AudioWidget> {
                     _translatedtext = await _translateText();
                     if (_translatedtext == "") {
                       setState(() {
-                        _audioString = "Couldnot capture Voice Record Again";
+                        _audioString =
+                            AppLocalizations.of(context).couldNotCapture;
                         _loadingVisibility = false;
                         _recordVisibility = true;
                       });
                     }
                   },
-                  child: Text("Stop Recording",
+                  child: Text(AppLocalizations.of(context).stopRecording,
                       style: GoogleFonts.lexendDeca(fontSize: 16)),
                 ),
               ),
@@ -132,7 +134,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Original Audio"),
+                    Text(AppLocalizations.of(context).originalAudio),
                     IconButton(
                       onPressed: () {
                         _textToSpeech(_listeningString, _senderLanguage);
@@ -150,7 +152,7 @@ class _AudioWidgetState extends State<AudioWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Translated Audio"),
+                    Text(AppLocalizations.of(context).translatedAudio),
                     IconButton(
                       onPressed: () {
                         _textToSpeech(_translatedtext, _receiverLanguage);
@@ -208,7 +210,7 @@ class _AudioWidgetState extends State<AudioWidget> {
       );
       if (available) {
         setState(() {
-          _audioString = "Recording....";
+          _audioString = AppLocalizations.of(context).recording;
           _recordVisibility = false;
           _recordAudioVisibility = true;
           _isListening = true;

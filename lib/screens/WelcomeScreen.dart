@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'Chats.dart' as chats;
 import 'Contacts.dart' as contacts;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -40,17 +41,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Alert'),
-          content: Text('Are you sure you want to logout!'),
+          title: Text(AppLocalizations.of(context).alert),
+          content: Text(AppLocalizations.of(context).areYouSure),
           actions: <Widget>[
             TextButton(
-              child: Text('No'),
+              child: Text(AppLocalizations.of(context).no),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Yes'),
+              child: Text(AppLocalizations.of(context).yes),
               onPressed: () {
                 Navigator.of(context).pop();
                 FirebaseAuth.instance.signOut();
@@ -106,11 +107,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               controller: _tabController,
               tabs: [
                 Tab(
-                  child: Text('Chats',
+                  child: Text(AppLocalizations.of(context).chats,
                       style: GoogleFonts.sourceSansPro(fontSize: 18)),
                 ),
                 Tab(
-                  child: Text('Contacts',
+                  child: Text(AppLocalizations.of(context).contacts,
                       style: GoogleFonts.sourceSansPro(fontSize: 18)),
                 ),
               ],

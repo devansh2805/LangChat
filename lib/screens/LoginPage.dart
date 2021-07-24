@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../backend/authentication.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class LoginPageState extends State<LoginPage> {
               maxLength: 10,
               controller: _phoneController,
               decoration: new InputDecoration(
-                labelText: "Mobile Number",
+                labelText: AppLocalizations.of(context).mobileNumber,
                 border: OutlineInputBorder(
                   borderSide: BorderSide(),
                 ),
@@ -59,7 +60,7 @@ class LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Text(
-                        'please wait for the verification code..',
+                        AppLocalizations.of(context).pleaseWaitForVerCode,
                         style: GoogleFonts.lexendDeca(),
                       )
                     ],
@@ -75,7 +76,7 @@ class LoginPageState extends State<LoginPage> {
                 await Auth().loginUser(phoneNumber, context);
               },
               child: Text(
-                'Login',
+                AppLocalizations.of(context).login,
                 style: GoogleFonts.lexendDeca(
                   color: Colors.white,
                   fontSize: 20,
