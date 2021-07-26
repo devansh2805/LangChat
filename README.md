@@ -91,11 +91,11 @@ exports.sendNotification = functions.firestore
 ```
 
 ### Internationalization
-Currently implemented for English and Hindi.
+Currently implemented for English and Hindi. The app takes up the language set in your phone :iphone:.
 
 <img src="https://github.com/devansh2805/LangChat/blob/main/demo/demo.gif?raw=true" width="300" />
 
-### Tech Stack
+### Tech Stack :wrench:
 
 [![](https://img.shields.io/badge/Made_Using-Flutter-blue?style=curve-square&logo=flutter)](https://flutter.dev/docs)
 
